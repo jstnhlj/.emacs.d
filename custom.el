@@ -18,4 +18,5 @@
   ;; If there is more than one, they won't work right.
  '(fill-column 80)
  '(ido-use-filename-at-point (quote guess))
+ '(magit-git-executable "/usr/local/git/bin/git")
  '(safe-local-variable-values (quote ((encoding . utf-8)))))

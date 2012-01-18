@@ -4,12 +4,10 @@
 (add-to-list 'auto-mode-alist '("jsTestDriver\\.conf$" . yaml-mode))
 
 ;; Adventur
-(add-to-list 'load-path "~/.emacs.d/site-lisp/adventur-mode")
 (autoload 'adventur-mode "adventur-mode")
 (add-to-list 'auto-mode-alist '("A[0-9]+/A[0-9]+\\.txt$" . adventur-mode))
 
 ;; Jade and Stylus (sws = significant whitespace)
-(add-to-list 'load-path "~/.emacs.d/site-lisp/jade-mode")
 (autoload 'sws-mode "sws-mode")
 (autoload 'jade-mode "jade-mode")
 (add-to-list 'auto-mode-alist '("\\.styl$" . sws-mode))
@@ -21,6 +19,11 @@
 (add-to-list 'auto-mode-alist '("\\.jspf$" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.tag$" . html-mode))
 
+(add-hook 'sgml-mode-hook
+          (lambda ()
+            (require 'rename-sgml-tag)
+            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+
 ;; Ruby
 (autoload 'rhtml-mode "rhtml-mode")
 (add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
@@ -31,13 +34,21 @@
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.erb$" . rhtml-mode))
 
+;; Groovy
+(autoload 'groovy-mode "groovy-mode")
+(add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
+
+;; Clojure
+(autoload 'clojure-mode "clojure-mode")
+(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+
 ;; SVG
 (add-to-list 'auto-mode-alist '("\\.svg$" . image-mode))
 
 ;; JavaScript
 (autoload 'js2-mode "setup-js2-mode")
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
 (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
 ;; Snippets
@@ -52,7 +63,6 @@
                    (len (length file)))
               (if (or (string-match-p "oppdrag-services" file)
                       (string-match-p "oppdrag.git" file)) (oppdrag-mode)))))
-
 
 ;; Buster.JS
 ;(autoload 'buster-mode "buster-mode")

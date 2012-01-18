@@ -35,10 +35,22 @@
 (require 'setup-yasnippet)
 (require 'setup-dired)
 (require 'setup-magit)
+(require 'setup-rgrep)
 (require 'setup-hippie)
+(require 'setup-ace-jump-mode)
+(require 'setup-perspective)
+(require 'setup-shell)
+;(require 'setup-autopair) -- could this be the culprit in delete-selection-mode failures?
 
 ;; Map files to modes
 (require 'mode-mappings)
+
+;; Map paths to project settings
+(require 'project-mappings)
+
+;; Hardcore mode
+(require 'hardcore-mode)
+;(global-hardcore-mode)
 
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "defuns" dotfiles-dir))
@@ -47,10 +59,16 @@
     (load file)))
 (require 'recall-position)
 (require 'expand-region)
-(require 'iy-go-to-char)
+(require 'mark-more-like-this)
+(require 'inline-string-rectangle)
+(require 'delsel)
+(require 'jump-char)
+(require 'eproject)
 
-;; Setup key mappings
-(require 'key-chords)
+;; Vimgolf
+(load (expand-file-name "vimgolf/emacs/vimgolf.el" site-lisp-dir))
+
+;; Setup key bindings
 (require 'key-bindings)
 
 ;; Misc

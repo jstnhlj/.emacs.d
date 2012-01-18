@@ -8,7 +8,7 @@
  '(highlight ((((class color) (min-colors 88) (background dark)) (:background "#111111"))))
  '(js2-function-param-face ((t (:foreground "LightGoldenrod"))))
  '(mumamo-background-chunk-submode ((((class color) (min-colors 88) (background dark)) nil)))
- '(show-paren-match ((nil (:background "#222277"))))
+ '(show-paren-match ((nil (:background "#333399"))))
  '(show-paren-mismatch ((((class color)) (:background "red")))))
 
 (custom-set-variables
@@ -18,13 +18,4 @@
   ;; If there is more than one, they won't work right.
  '(fill-column 80)
  '(ido-use-filename-at-point (quote guess))
- '(js2-allow-rhino-new-expr-initializer nil)
- '(js2-auto-indent-p t)
- '(js2-basic-offset 2)
- '(js2-enter-indents-newline t)
- '(js2-global-externs (quote ("module" "require" "jQuery" "$" "_" "buster" "sinon" "ZOMBIE")))
- '(js2-indent-on-enter-key t)
- '(js2-mirror-mode nil)
- '(js2-strict-inconsistent-return-warning nil)
- '(magit-git-executable "/usr/local/git/bin/git")
  '(safe-local-variable-values (quote ((encoding . utf-8)))))

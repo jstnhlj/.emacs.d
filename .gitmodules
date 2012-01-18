@@ -22,3 +22,42 @@
 [submodule "site-lisp/coffee-mode"]
 	path = site-lisp/coffee-mode
 	url = https://github.com/defunkt/coffee-mode
+[submodule "site-lisp/mark-multiple"]
+	path = site-lisp/mark-multiple
+	url = https://github.com/magnars/mark-multiple.el.git
+[submodule "site-lisp/ace-jump-mode"]
+	path = site-lisp/ace-jump-mode
+	url = https://github.com/winterTTr/ace-jump-mode.git
+[submodule "site-lisp/buster-snippets"]
+	path = site-lisp/buster-snippets
+	url = https://github.com/magnars/buster-snippets.el.git
+[submodule "site-lisp/yasnippet"]
+	path = site-lisp/yasnippet
+	url = https://github.com/capitaomorte/yasnippet.git
+[submodule "site-lisp/expand-region"]
+	path = site-lisp/expand-region
+	url = https://github.com/magnars/expand-region.el.git
+[submodule "site-lisp/php-mode"]
+	path = site-lisp/php-mode
+	url = https://github.com/ejmr/php-mode.git
+[submodule "site-lisp/perspective"]
+	path = site-lisp/perspective
+	url = https://github.com/magnars/perspective-el.git
+[submodule "site-lisp/delsel"]
+	path = site-lisp/delsel
+	url = https://github.com/emacsmirror/delsel.git
+[submodule "site-lisp/hardcore-mode"]
+	path = site-lisp/hardcore-mode
+	url = https://github.com/magnars/hardcore-mode.el.git
+[submodule "site-lisp/vimgolf"]
+	path = site-lisp/vimgolf
+	url = https://github.com/timvisher/vimgolf.git
+[submodule "site-lisp/bash-completion"]
+	path = site-lisp/bash-completion
+	url = https://github.com/szermatt/emacs-bash-completion.git
+[submodule "site-lisp/eproject"]
+	path = site-lisp/eproject
+	url = https://github.com/jrockway/eproject.git
+[submodule "site-lisp/jump-char"]
+	path = site-lisp/jump-char
+	url = https://github.com/lewang/jump-char.git

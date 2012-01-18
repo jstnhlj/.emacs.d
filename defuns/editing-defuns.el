@@ -67,12 +67,14 @@ region-end is used. Adds the duplicated text to the kill ring."
       (transpose-lines -1))
     (move-to-column col)))
 
-(defun yank-as-line ()
+(defun yank-indented ()
   (interactive)
-  (save-excursion
-    (insert "\n")
-    (indent-for-tab-command))
-  (yank))
+  (let ((start (point)))
+    (yank)
+    (indent-region start (point))))
+
+;; define as yank-command for delsel.el
+(put 'yank-indented 'delete-selection 'yank-indented)
 
 ;; toggle quotes
 
@@ -93,21 +95,21 @@ region-end is used. Adds the duplicated text to the kill ring."
 (defun toggle-quotes ()
   (interactive)
   (if (point-is-in-string-p)
-    (let ((old-quotes (char-to-string (current-quotes-char)))
-          (new-quotes (char-to-string (alternate-quotes-char)))
-          (start (make-marker))
-          (end (make-marker)))
-      (save-excursion
-        (move-point-forward-out-of-string)
-        (backward-delete-char 1)
-        (set-marker end (point))
-        (insert new-quotes)
-        (move-point-backward-out-of-string)
-        (delete-char 1)
-        (insert new-quotes)
-        (set-marker start (point))
-        (replace-string new-quotes (concat "\\" new-quotes) nil start end)
-        (replace-string (concat "\\" old-quotes) old-quotes nil start end)))
+      (let ((old-quotes (char-to-string (current-quotes-char)))
+            (new-quotes (char-to-string (alternate-quotes-char)))
+            (start (make-marker))
+            (end (make-marker)))
+        (save-excursion
+          (move-point-forward-out-of-string)
+          (backward-delete-char 1)
+          (set-marker end (point))
+          (insert new-quotes)
+          (move-point-backward-out-of-string)
+          (delete-char 1)
+          (insert new-quotes)
+          (set-marker start (point))
+          (replace-string new-quotes (concat "\\" new-quotes) nil start end)
+          (replace-string (concat "\\" old-quotes) old-quotes nil start end)))
     (error "Point isn't in a string")))
 
 ;; kill region if active, otherwise kill backward word
@@ -117,6 +119,22 @@ region-end is used. Adds the duplicated text to the kill ring."
   (if (region-active-p)
       (kill-region (region-beginning) (region-end))
     (backward-kill-word 1)))
+
+;; Slightly more useful C-a and C-e
+
+(defun move-end-of-line-or-next-line ()
+  (interactive)
+  (if (and (eolp)
+           (eq last-command 'move-end-of-line-or-next-line))
+      (move-end-of-line 2)
+    (move-end-of-line nil)))
+
+(defun move-start-of-line-or-prev-line ()
+  (interactive)
+  (if (and (bolp)
+           (eq last-command 'move-start-of-line-or-prev-line))
+      (move-beginning-of-line 0)
+    (move-beginning-of-line nil)))
 
 ;; copy region if active
 ;; otherwise copy to end of current line
@@ -153,3 +171,14 @@ region-end is used. Adds the duplicated text to the kill ring."
   (interactive)
   (back-to-indentation)
   (kill-line))
+
+(defun replace-next-underscore-with-camel (arg)
+  (interactive "p")
+  (if (> arg 0)
+      (setq arg (1+ arg))) ; 1-based index to get eternal loop with 0
+  (while (not (= arg 1))
+    (search-forward-regexp "_\\sw")
+    (forward-char -2)
+    (delete-char 1)
+    (capitalize-word 1)
+    (setq arg (1- arg))))

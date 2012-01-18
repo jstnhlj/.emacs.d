@@ -1,4 +1,5 @@
 (require 'magit)
+(require 'magit-svn)
 
 (defvar magit-status-fullscreen-window-configuration-register
   ?b
@@ -9,6 +10,13 @@ entering fullscreen magit-status.")
   ?g
   "The register to store the fullscreen magit-status
 window configuration in.")
+
+(defun magit-kill-file-on-line ()
+  "Show file on current magit line and prompt for deletion."
+  (interactive)
+  (magit-visit-item)
+  (delete-current-buffer-file)
+  (magit-refresh))
 
 (defun magit-status-fullscreen ()
   "Save the current window configuration, run magit-status
@@ -23,5 +31,12 @@ in register specified by the magit-status-register variable."
   (delete-other-windows)
   (window-configuration-to-register magit-status-fullscreen-register))
 
+(defun magit-quit-session ()
+  "Restores the previous window configuration and kills the
+magit buffer"
+  (interactive)
+  (let ((magit-buffer (current-buffer)))
+    (jump-to-register magit-status-fullscreen-window-configuration-register)
+    (kill-buffer magit-buffer)))
 
 (provide 'setup-magit)

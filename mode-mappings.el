@@ -19,6 +19,7 @@
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.jsp$" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.jspf$" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.tag$" . html-mode))
 
 ;; Ruby
 (autoload 'rhtml-mode "rhtml-mode")
@@ -49,7 +50,8 @@
           (lambda ()
             (let* ((file (buffer-file-name))
                    (len (length file)))
-              (if (string-match-p "oppdrag-services" file) (oppdrag-mode)))))
+              (if (or (string-match-p "oppdrag-services" file)
+                      (string-match-p "oppdrag.git" file)) (oppdrag-mode)))))
 
 
 ;; Buster.JS

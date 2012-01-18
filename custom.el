@@ -17,7 +17,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(fill-column 80)
- '(ido-use-filename-at-point nil)
+ '(ido-use-filename-at-point (quote guess))
  '(js2-allow-rhino-new-expr-initializer nil)
  '(js2-auto-indent-p t)
  '(js2-basic-offset 2)
@@ -26,4 +26,5 @@
  '(js2-indent-on-enter-key t)
  '(js2-mirror-mode nil)
  '(js2-strict-inconsistent-return-warning nil)
+ '(magit-git-executable "/usr/local/git/bin/git")
  '(safe-local-variable-values (quote ((encoding . utf-8)))))

@@ -21,7 +21,12 @@
   (interactive)
   (custom-persp "org"
                 (find-file "~/Dropbox/org/")))
+(defun custom-persp/tirilaarvig ()
+  (interactive)
+  (custom-persp "tirilaarvig"
+                (find-file "~/projects/tirilaarvig/rails-app/")))
 
 (define-key persp-mode-map (kbd "C-x p o") 'custom-persp/oppdrag)
 (define-key persp-mode-map (kbd "C-x p e") 'custom-persp/emacs)
+(define-key persp-mode-map (kbd "C-x p t") 'custom-persp/tirilaarvig)
 (define-key persp-mode-map (kbd "C-<f6>") 'custom-persp/org)

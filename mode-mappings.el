@@ -55,16 +55,6 @@
 ;; Snippets
 (add-to-list 'auto-mode-alist '("yasnippet/snippets" . snippet-mode))
 
-;; Oppdrag
-(require 'oppdrag-mode)
-
-(add-hook 'find-file-hook
-          (lambda ()
-            (let* ((file (buffer-file-name))
-                   (len (length file)))
-              (if (or (string-match-p "oppdrag-services" file)
-                      (string-match-p "oppdrag.git" file)) (oppdrag-mode)))))
-
 ;; Buster.JS
 ;(autoload 'buster-mode "buster-mode")
 ;(setq buster-node-executable "/usr/local/bin/node")

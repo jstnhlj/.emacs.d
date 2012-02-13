@@ -3,6 +3,10 @@
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("jsTestDriver\\.conf$" . yaml-mode))
 
+;; Cucumber
+(autoload 'feature-mode "feature-mode")
+(add-to-list 'auto-mode-alist '("\\.feature$" . feature-mode))
+
 ;; Adventur
 (autoload 'adventur-mode "adventur-mode")
 (add-to-list 'auto-mode-alist '("\\.adv$" . adventur-mode))
@@ -22,7 +26,6 @@
 (add-hook 'sgml-mode-hook
           (lambda ()
             (require 'rename-sgml-tag)
-            (define-key sgml-mode-map (kbd "C-c RET co") 'jsp-wrap-in-c-out)
             (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
 
 ;; Ruby
@@ -34,6 +37,10 @@
 (add-to-list 'auto-mode-alist '("\\.ru$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.erb$" . rhtml-mode))
+
+;; Puppet
+(autoload 'puppet-mode "puppet-mode")
+(add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
 
 ;; Groovy
 (autoload 'groovy-mode "groovy-mode")

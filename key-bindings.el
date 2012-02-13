@@ -8,7 +8,6 @@
 
 ;; Expand region (increases selected region by semantic units)
 (global-set-key (if is-mac (kbd "C-@") (kbd "C-'")) 'er/expand-region)
-(global-set-key (kbd "C-*") 'er/contract-region)
 
 ;; Experimental multiple-cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/add-multiple-cursors-to-region-lines)
@@ -16,8 +15,8 @@
 (global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
 
 ;; Mark additional regions matching current region
-(global-set-key (kbd "C-å") 'mark-previous-like-this)
-(global-set-key (kbd "C-æ") 'mark-next-like-this)
+(global-set-key (kbd "C-å") 'mark-more-like-this-extended)
+(global-set-key (kbd "C-æ") 'mark-more-like-this-extended)
 
 ;; Replace rectangle-text with inline-string-rectangle
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)

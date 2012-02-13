@@ -15,6 +15,21 @@
 (require 'js2-mode)
 (require 'js2-refactor)
 
+(define-key js2-mode-map (kbd "C-c RET jt") 'jump-to-test-file)
+(define-key js2-mode-map (kbd "C-c RET ot") 'jump-to-test-file-other-window)
+(define-key js2-mode-map (kbd "C-c RET js") 'jump-to-source-file)
+(define-key js2-mode-map (kbd "C-c RET os") 'jump-to-source-file-other-window)
+
+(defun js2-hide-test-functions ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (ignore-errors
+      (while (re-search-forward "\"should [^\"]+\": function (")
+        (js2-mode-hide-element)))))
+
+(define-key js2-mode-map (kbd "C-c t") 'js2-hide-test-functions)
+
 ;; js2-mode steals TAB, let's steal it back for yasnippet
 (defun js2-tab-properly ()
   (interactive)
@@ -23,6 +38,8 @@
       (indent-for-tab-command)
       (if (looking-back "^\s*")
           (back-to-indentation)))))
+
+(define-key js2-mode-map (kbd "TAB") 'js2-tab-properly)
 
 ;; Use lambda for anonymous functions
 (font-lock-add-keywords
@@ -37,7 +54,5 @@
               (0 (progn (compose-region (match-beginning 1)
                                         (match-end 1) "\u2190")
                         nil)))))
-
-(define-key js2-mode-map (kbd "TAB") 'js2-tab-properly)
 
 (provide 'setup-js2-mode)

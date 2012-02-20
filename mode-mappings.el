@@ -71,6 +71,10 @@
 (autoload 'markdown-mode "markdown-mode")
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
+;; HAML
+(autoload 'haml-mode "haml-mode")
+(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
+
 ;; PHP
 (autoload 'php-mode "php-mode")
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))

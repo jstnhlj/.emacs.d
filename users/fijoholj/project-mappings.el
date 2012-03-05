@@ -24,7 +24,7 @@
 (defun custom-persp/tirilaarvig ()
   (interactive)
   (custom-persp "tirilaarvig"
-                (find-file "~/projects/tirilaarvig/rails-app/")))
+                (find-file "~/projects/tirilaarvig/app/")))
 
 (define-key persp-mode-map (kbd "C-x p o") 'custom-persp/oppdrag)
 (define-key persp-mode-map (kbd "C-x p e") 'custom-persp/emacs)

@@ -1,17 +1,23 @@
+(defmacro project-specifics (name &rest body)
+  `(add-hook 'find-file-hook
+             (lambda ()
+               (when (string-match-p ,name (buffer-file-name))
+                 ,@body))))
+
 ;; FINN Oppdrag
 
 (defun custom-persp/oppdrag ()
   (interactive)
   (custom-persp "oppdrag"
-                (find-file "~/projects/finn-oppdrag/oppdrag-services/app-main/web/src/")))
+                (find-file "~/projects/finn-oppdrag/oppdrag-services/app-main/web/src/test/javascript/todo.org")))
 
 (define-key persp-mode-map (kbd "C-x p o") 'custom-persp/oppdrag)
 
 (require 'oppdrag-mode)
-(add-hook 'find-file-hook
-          (lambda ()
-            (when (string-match-p "oppdrag-services" (buffer-file-name))
-              (oppdrag-mode))))
+
+(project-specifics "oppdrag-services"
+                   (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*jsTestDriver.conf" "*jawr.properties")
+                   (oppdrag-mode))
 
 ;; Zombie TDD
 
@@ -22,9 +28,12 @@
 
 (define-key persp-mode-map (kbd "C-x p z") 'custom-persp/zombie)
 
+(project-specifics "projects/zombietdd"
+                   (ffip-local-patterns "*.js" "*.jade" "*.css" "*.json" "*.md"))
+
 (add-hook 'js2-mode-hook
           (lambda ()
-            (when (string-match-p "zombietdd" (buffer-file-name))
+            (when (string-match-p "projects/zombietdd" (buffer-file-name))
               (setq js2-additional-externs '("ZOMBIE" "Faye" "EventEmitter" "when"))
               (setq buster-default-global "ZOMBIE")
               (setq buster-add-default-global-to-iife t)
@@ -36,13 +45,14 @@
 (defun custom-persp/culljs ()
   (interactive)
   (custom-persp "culljs"
-                (find-file "~/projects/culljs/")))
+                (find-file "~/projects/culljs/todo.org")))
 
 (define-key persp-mode-map (kbd "C-x p c") 'custom-persp/culljs)
 
 (add-hook 'js2-mode-hook
           (lambda ()
             (when (string-match-p "projects/culljs" (buffer-file-name))
+              (setq js2-additional-externs '("cull"))
               (setq buster-default-global "cull")
               (setq buster-add-default-global-to-iife t)
               (setq buster-use-strict t)
@@ -66,12 +76,18 @@
   (interactive)
   (custom-persp "emacs"
                 (find-file "~/.emacs.d/init.el")))
+
+(project-specifics ".emacs.d"
+                   (ffip-local-excludes "swank")
+                   (ffip-local-patterns "*.el" "*.md" "*.org"))
+
 (define-key persp-mode-map (kbd "C-x p e") 'custom-persp/emacs)
 
 ;; Org
 
 (defun custom-persp/org ()
   (interactive)
-  (custom-persp "org"
-                (find-file "~/Dropbox/org/")))
+  (custom-persp "org")
+  (find-file "~/Dropbox/org/"))
+
 (define-key persp-mode-map (kbd "C-<f6>") 'custom-persp/org)

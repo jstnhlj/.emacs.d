@@ -1,9 +1,6 @@
 [submodule "site-lisp/yaml-mode"]
         path = site-lisp/yaml-mode
         url = https://github.com/yoshiki/yaml-mode.git
-[submodule "site-lisp/recall-position"]
-        path = site-lisp/recall-position
-        url = http://github.com/cjohansen/recall-position.el.git
 [submodule "site-lisp/buster-mode"]
         path = site-lisp/buster-mode
         url = git://gitorious.org/buster/buster-mode.git
@@ -76,3 +73,6 @@
 [submodule "site-lisp/browse-kill-ring"]
 	path = site-lisp/browse-kill-ring
 	url = https://github.com/T-J-Teru/browse-kill-ring.git
+[submodule "site-lisp/find-file-in-project"]
+	path = site-lisp/find-file-in-project
+	url = https://github.com/technomancy/find-file-in-project

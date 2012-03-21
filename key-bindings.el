@@ -15,6 +15,7 @@
 (global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
 
 ;; Mark additional regions matching current region
+(global-set-key (kbd "M-æ") 'mark-all-like-this)
 (global-set-key (kbd "C-å") 'mark-previous-like-this)
 (global-set-key (kbd "C-æ") 'mark-next-like-this)
 (global-set-key (kbd "C-Å") 'mark-more-like-this-extended)
@@ -76,7 +77,7 @@
 (global-set-key (kbd "<C-tab>") 'bury-buffer)
 
 ;; Jump to a definition in the current file. (This is awesome.)
-(global-set-key (kbd "C-x C-i") 'ido-imenu)
+(global-set-key (kbd "C-x C-i") 'ido-imenu-push-mark)
 
 ;; File finding
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
@@ -132,6 +133,9 @@
 ;; Query replace regex key binding
 (global-set-key (kbd "M-&") 'query-replace-regexp)
 
+;; Yank selection in isearch
+(define-key isearch-mode-map (kbd "C-o") 'isearch-yank-selection)
+
 ;; Comment out block
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 
@@ -152,9 +156,6 @@
 (global-set-key (kbd "<s-left>") 'windmove-left)
 (global-set-key (kbd "<s-up>") 'windmove-up)
 (global-set-key (kbd "<s-down>") 'windmove-down)
-
-;; Recall position
-(global-set-key (kbd "C-c C-s") 'toggle-buffer-pos)
 
 ;; Mark all
 (global-set-key (kbd "C-c a") 'mark-whole-buffer)
@@ -209,7 +210,7 @@
 ;; Find-name-dired
 (global-set-key (kbd "M-s f") 'find-name-dired)
 
-;; Open my org files
-(global-set-key (kbd "<f6>") (lambda () (interactive) (find-file-other-frame "~/Dropbox/org/")))
+;; Find file in project
+(global-set-key (kbd "C-x o") 'find-file-in-project)
 
 (provide 'key-bindings)

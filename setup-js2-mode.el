@@ -8,7 +8,6 @@
 (setq-default js2-strict-inconsistent-return-warning nil)
 (setq-default js2-auto-indent-p t)
 (setq-default js2-rebind-eol-bol-keys nil)
-(setq-default js2-mode-show-parse-errors nil)
 (setq-default js2-include-rhino-externs nil)
 (setq-default js2-include-gears-externs nil)
 
@@ -19,6 +18,8 @@
 (define-key js2-mode-map (kbd "C-c RET ot") 'jump-to-test-file-other-window)
 (define-key js2-mode-map (kbd "C-c RET js") 'jump-to-source-file)
 (define-key js2-mode-map (kbd "C-c RET os") 'jump-to-source-file-other-window)
+(define-key js2-mode-map (kbd "C-c RET jo") 'jump-between-source-and-test-files)
+(define-key js2-mode-map (kbd "C-c RET oo") 'jump-between-source-and-test-files-other-window)
 
 (defun js2-hide-test-functions ()
   (interactive)

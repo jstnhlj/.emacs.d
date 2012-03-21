@@ -52,6 +52,7 @@
 (require 'setup-perspective)
 (require 'setup-shell)
 (require 'setup-wrap-region)
+(require 'setup-ffip)
 
 ;; Map files to modes
 (require 'mode-mappings)
@@ -65,7 +66,6 @@
 (dolist (file (directory-files defuns-dir t "\\w+"))
   (when (file-regular-p file)
     (load file)))
-(require 'recall-position)
 (require 'expand-region)
 (require 'mark-more-like-this)
 (require 'inline-string-rectangle)

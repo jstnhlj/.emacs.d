@@ -79,3 +79,12 @@
 [submodule "site-lisp/wgrep"]
 	path = site-lisp/wgrep
 	url = https://github.com/magnars/Emacs-wgrep
+[submodule "site-lisp/smex"]
+	path = site-lisp/smex
+	url = https://github.com/nonsequitur/smex.git
+[submodule "site-lisp/annoying-arrows-mode"]
+	path = site-lisp/annoying-arrows-mode
+	url = git://github.com/magnars/annoying-arrows-mode.el.git
+[submodule "site-lisp/replace-plus"]
+	path = site-lisp/replace-plus
+	url = https://github.com/emacsmirror/replace-plus.git

@@ -93,4 +93,8 @@
 ;; Easily navigate sillycased words
 (global-subword-mode 1)
 
+;; Add marmalade to package repos
+(require 'package)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
 (provide 'sane-defaults)

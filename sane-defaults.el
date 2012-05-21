@@ -90,7 +90,8 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;; Easily navigate sillycased words
-(global-subword-mode 1)
+;; Add marmalade to package repos
+(eval-after-load "package"
+  '(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/")))
 
 (provide 'sane-defaults)

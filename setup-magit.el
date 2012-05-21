@@ -1,58 +1,67 @@
-(require 'magit)
-(require 'magit-svn)
+(autoload 'magit-status "magit")
 
-;; Load git configurations
-;; For instance, to run magit-svn-mode in a project, do:
-;;
-;;     git config --add magit.extension svn
-;;
-(add-hook 'magit-mode-hook 'magit-load-config-extensions)
+(eval-after-load "magit"
+  '(progn
+     (require 'magit-svn)
 
-;; C-x C-k to kill file on line
+     ;; Subtler highlight
+     (set-face-background 'magit-item-highlight "#121212")
+     (set-face-foreground 'diff-context "#666666")
+     (set-face-foreground 'diff-added "#00cc33")
+     (set-face-foreground 'diff-removed "#ff0000")
 
-(defun magit-kill-file-on-line ()
-  "Show file on current magit line and prompt for deletion."
-  (interactive)
-  (magit-visit-item)
-  (delete-current-buffer-file)
-  (magit-refresh))
+     ;; Load git configurations
+     ;; For instance, to run magit-svn-mode in a project, do:
+     ;;
+     ;;     git config --add magit.extension svn
+     ;;
+     (add-hook 'magit-mode-hook 'magit-load-config-extensions)
 
-(define-key magit-status-mode-map (kbd "C-x C-k") 'magit-kill-file-on-line)
+     ;; C-x C-k to kill file on line
 
-;; full screen magit-status
+     (defun magit-kill-file-on-line ()
+       "Show file on current magit line and prompt for deletion."
+       (interactive)
+       (magit-visit-item)
+       (delete-current-buffer-file)
+       (magit-refresh))
 
-(defadvice magit-status (around magit-fullscreen activate)
-  (window-configuration-to-register :magit-fullscreen)
-  ad-do-it
-  (delete-other-windows))
+     (define-key magit-status-mode-map (kbd "C-x C-k") 'magit-kill-file-on-line)
 
-(defun magit-quit-session ()
-  "Restores the previous window configuration and kills the magit
-buffer"
-  (interactive)
-  (kill-buffer)
-  (jump-to-register :magit-fullscreen))
+     ;; full screen magit-status
 
-(define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+     (defadvice magit-status (around magit-fullscreen activate)
+       (window-configuration-to-register :magit-fullscreen)
+       ad-do-it
+       (delete-other-windows))
 
-;; ignore whitespace
+     (defun magit-quit-session ()
+       "Restores the previous window configuration and kills the magit buffer"
+       (interactive)
+       (kill-buffer)
+       (jump-to-register :magit-fullscreen))
 
-(defun magit-toggle-whitespace ()
-  (interactive)
-  (if (member "-w" magit-diff-options)
-      (magit-dont-ignore-whitespace)
-    (magit-ignore-whitespace)))
+     (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
 
-(defun magit-ignore-whitespace ()
-  (interactive)
-  (add-to-list 'magit-diff-options "-w")
-  (magit-refresh))
+     ;; ignore whitespace
 
-(defun magit-dont-ignore-whitespace ()
-  (interactive)
-  (setq magit-diff-options (remove "-w" magit-diff-options))
-  (magit-refresh))
+     (defun magit-toggle-whitespace ()
+       (interactive)
+       (if (member "-w" magit-diff-options)
+           (magit-dont-ignore-whitespace)
+         (magit-ignore-whitespace)))
 
-(define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
+     (defun magit-ignore-whitespace ()
+       (interactive)
+       (add-to-list 'magit-diff-options "-w")
+       (magit-refresh))
+
+     (defun magit-dont-ignore-whitespace ()
+       (interactive)
+       (setq magit-diff-options (remove "-w" magit-diff-options))
+       (magit-refresh))
+
+     (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
+     ))
 
 (provide 'setup-magit)

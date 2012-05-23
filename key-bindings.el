@@ -101,6 +101,8 @@
 ;; Window switching
 (windmove-default-keybindings) ;; Shift+direction
 (global-set-key (kbd "C-x -") 'rotate-windows)
+(global-set-key (kbd "C-x C--") 'toggle-window-split)
+(global-unset-key (kbd "C-x C-+")) ;; don't zoom like this
 
 ;; Indentation help
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
@@ -211,5 +213,10 @@
 
 ;; Find file in project
 (global-set-key (kbd "C-x o") 'find-file-in-project)
+
+;; View occurrence in occur mode
+(define-key occur-mode-map (kbd "v") 'occur-mode-display-occurrence)
+(define-key occur-mode-map (kbd "n") 'next-line)
+(define-key occur-mode-map (kbd "p") 'previous-line)
 
 (provide 'key-bindings)

@@ -32,6 +32,9 @@ I use Cocoa Emacs, installed like this:
 
     brew install emacs --cocoa --use-git-head --HEAD
 
+To open it with Alfred or Quicksilver, you have to copy `Emacs.app` into
+`/Applications` instead of the symlink that brew places there.
+
 ## Tips for using these emacs settings
 
 If you want to use my settings straight out of the box, here are some things to note:
@@ -62,5 +65,9 @@ If you want to use my settings straight out of the box, here are some things to 
  * Quickly jump anywhere in the buffer by pressing `fn` plus the starting letter of a word.
 
  * Indent and clean up white space in the entire buffer with `C-c n`
+
+ * On a mac, the Meta key `M` is bound to Command.
+
+ * I recommend rebinding Caps Lock to Ctrl and use that instead of the often badly placed Ctrl-key.
 
  * Watch [emacsrocks.com](http://emacsrocks.com)

@@ -10,6 +10,10 @@
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
 (push "/usr/local/bin" exec-path)
 
+;; Add leiningen to path
+(setenv "PATH" (concat "/Users/fijoholj/lein:" (getenv "PATH")))
+(push "/Users/fijoholj/lein" exec-path)
+
 ;; keybinding to toggle full screen mode
 (global-set-key (quote [M-f10]) (quote ns-toggle-fullscreen))
 

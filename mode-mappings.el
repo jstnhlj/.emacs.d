@@ -3,6 +3,10 @@
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("jsTestDriver\\.conf$" . yaml-mode))
 
+;; SCSS
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
+
 ;; Cucumber
 (autoload 'feature-mode "feature-mode")
 (add-to-list 'auto-mode-alist '("\\.feature$" . feature-mode))
@@ -73,6 +77,8 @@
 ;; Markdown
 (autoload 'markdown-mode "markdown-mode")
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+(add-hook 'markdown-mode-hook (lambda () (define-key markdown-mode-map (kbd "<tab>") 'yas/expand)))
 
 ;; HAML
 (autoload 'haml-mode "haml-mode")

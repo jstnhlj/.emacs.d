@@ -18,6 +18,19 @@
 
 (define-key persp-mode-map (kbd "C-x p i") 'custom-persp/intelliadv)
 
+;; Emacs Rocks
+
+(defun custom-persp/emacsrocks ()
+  (interactive)
+  (custom-persp "emacsrocks"
+                (find-file "~/projects/emacsrocks/site/lib/episodes.rb")))
+
+(define-key persp-mode-map (kbd "C-x p r") 'custom-persp/emacsrocks)
+
+(project-specifics "projects/emacsrocks"
+                   (set (make-local-variable 'slime-js-target-url) "http://localhost:4567/")
+                   (ffip-local-patterns "*.js" "*.scss" "*.org" "*.rb"))
+
 ;; FINN Oppdrag
 
 (defun custom-persp/oppdrag ()
@@ -30,6 +43,7 @@
 (require 'oppdrag-mode)
 
 (project-specifics "oppdrag-services"
+                   (set (make-local-variable 'slime-js-target-url) "http://local.finn.no:8080/oppdrag/")
                    (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*jsTestDriver.conf" "*jawr.properties")
                    (oppdrag-mode))
 
@@ -43,6 +57,7 @@
 (define-key persp-mode-map (kbd "C-x p z") 'custom-persp/zombie)
 
 (project-specifics "projects/zombietdd"
+                   (set (make-local-variable 'slime-js-target-url) "http://localhost:3000/")
                    (ffip-local-patterns "*.js" "*.jade" "*.css" "*.json" "*.md"))
 
 (add-hook 'js2-mode-hook
@@ -78,7 +93,6 @@
               (set (make-local-variable 'buster-test-prefix) "")
               (set (make-local-variable 'js2r-use-strict) t))))
 
-
 ;; culljs
 
 (defun custom-persp/culljs ()
@@ -99,6 +113,7 @@
               (set (make-local-variable 'buster-test-prefix) "")
               (set (make-local-variable 'js2-basic-offset) 4)
               (set (make-local-variable 'js2r-use-strict) t))))
+
 ;; buster
 
 (defun custom-persp/buster ()

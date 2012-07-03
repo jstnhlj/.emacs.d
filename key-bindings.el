@@ -7,6 +7,9 @@
 (global-set-key (kbd "C-.") 'hippie-expand)
 (global-set-key (kbd "C-:") 'hippie-expand-lines)
 
+;; Use the preferrable delete-forward-char for interactive use
+(global-set-key (kbd "C-d") 'delete-forward-char)
+
 ;; Smart M-x
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
@@ -26,6 +29,9 @@
 (global-set-key (kbd "C-æ") 'mark-next-like-this)
 (global-set-key (kbd "C-Å") 'mark-more-like-this-extended)
 (global-set-key (kbd "C-Æ") 'mark-more-like-this-extended)
+
+;; Set anchor to start rectangular-region-mode
+(global-set-key (kbd "H-SPC") 'set-rectangular-region-anchor)
 
 ;; Replace rectangle-text with inline-string-rectangle
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)

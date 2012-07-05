@@ -1,9 +1,25 @@
+(defmacro project-specifics (name &rest body)
+  `(progn
+     (add-hook 'find-file-hook
+             (lambda ()
+               (when (string-match-p ,name (buffer-file-name))
+                 ,@body)))
+     (add-hook 'dired-after-readin-hook
+             (lambda ()
+               (when (string-match-p ,name (dired-current-directory))
+                 ,@body)))))
+
 ;; Project peculiarities: FINN Oppdrag
 (require 'oppdrag-mode)
 (add-hook 'find-file-hook
           (lambda ()
             (when (string-match-p "oppdrag-services" (buffer-file-name))
               (oppdrag-mode))))
+
+(project-specifics "oppdrag-services"
+                   (set (make-local-variable 'slime-js-target-url) "http://local.finn.no:8080/oppdrag/")
+                   (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*jsTestDriver.conf" "*jawr.properties")
+                   (oppdrag-mode))
 
 ;; Perspectives
 

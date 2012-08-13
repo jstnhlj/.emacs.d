@@ -12,9 +12,18 @@
 (define-key global-map (kbd "M-s +") 'zoom-in)
 (define-key global-map (kbd "M-s -") 'zoom-out)
 
+;; Experimental rebind of C-b and C-f
+(fset 'quick-switch-buffer [?\C-x ?b return])
+(global-set-key (kbd "C-b") 'quick-switch-buffer) ;; toggle two most recent buffers
+(global-set-key (kbd "C-f") 'duplicate-current-line-or-region) ;; duplicate line
+
+;; Some basic elnode setup that should probably have been the default
+(setq elnode-do-init nil) ;; don't start a server on port 8000 when starting emacs
+(setq elnode-error-log-to-messages nil) ;; mute the crazy logging
+(setq elnode-log-files-directory nil) ;; more mute
+
 ;; Use GNU ls - install with:
-;;    brew install xz
-;;    brew install coreutils
+;;    brew install xz coreutils
 (setq insert-directory-program "gls")
 
 ;; org-mode: beginning/end of buffer on M-up/down
@@ -29,13 +38,3 @@
 (setq org-directory "~/Dropbox/org")
 (setq org-mobile-inbox-for-pull "~/Dropbox/org/flagged.org")
 (setq org-mobile-directory "~/Dropbox/MobileOrg-staging")
-
-;; Set up slime-js
-;; To install, see https://github.com/swank-js/swank-js/wiki/Installation
-
-(eval-after-load "js2-mode"
-  '(progn
-     (require 'slime)
-     (require 'slime-js)
-     (require 'setup-slime-js)
-     (diminish 'slime-js-minor-mode)))

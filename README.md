@@ -16,22 +16,16 @@ or on git v1.6.5 or later:
 
     git clone --recursive git://github.com/magnars/.emacs.d.git
 
-
-## Magit and clojure-mode
-
-I don't keep magit in my .emacs.d. To install magit, do
-
-    M-x package-list-packages
-
-Search for `magit` and install it there.
-
-The same is true for `clojure-mode` and `clojure-test-mode`. I haven't
-been able to set it up properly for testing, but installing it through
-the package system gets it right.
+The first time you start emacs, it will install some additional packages
+that are best handled by the package manager.
 
 ## Install emacs on mac
 
 I use Cocoa Emacs, installed like this:
+
+    brew install emacs --cocoa
+
+You can also get the very latest Emacs:
 
     brew install emacs --cocoa --use-git-head --HEAD
 
@@ -91,6 +85,7 @@ overview of the most commonly used shortcuts to get you through this pain:
 * `C-x f  ` Open a recently visited file
 * `C-x o  ` Open a file in the current project (based on .git ++)
 * `C-x C-s` Save this file
+* `C-x C-w` Save as ...
 * `C-x C-j` Jump to this files' current directory
 * `C-x b  ` Switch to another open file (buffer)
 * `C-x C-b` List all open files (buffers)
@@ -119,9 +114,8 @@ overview of the most commonly used shortcuts to get you through this pain:
 ### Navigation
 
 * `C-arrow` Move past words/paragraphs
-* `C-a    ` Go to start of line
+* `C-a    ` Go to indentation, then start of line
 * `C-e    ` Go to end of line
-* `M-i    ` Go to indentation
 * `M-g M-g` Go to line number
 * `C-x C-i` Go to symbol
 * `C-s    ` Search forward. Press `C-s` again to go further.

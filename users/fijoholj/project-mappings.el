@@ -44,7 +44,17 @@
   (custom-persp "tirilaarvig"
                 (find-file "~/projects/tirilaarvig/app/")))
 
+(defun custom-persp/hdo ()
+  (interactive)
+  (custom-persp "hdo"
+                (find-file "~/projects/hdo-site/")))
+
+(project-specifics "hdo-site"
+                   (setq js2r-path-to-tests "/spec/javascript/")
+                   (setq js2r-path-to-sources "/app/assets/javascripts/"))
+
 (define-key persp-mode-map (kbd "C-x p o") 'custom-persp/oppdrag)
 (define-key persp-mode-map (kbd "C-x p e") 'custom-persp/emacs)
 (define-key persp-mode-map (kbd "C-x p t") 'custom-persp/tirilaarvig)
+(define-key persp-mode-map (kbd "C-x p h") 'custom-persp/hdo)
 (define-key persp-mode-map (kbd "C-<f6>") 'custom-persp/org)

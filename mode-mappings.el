@@ -22,8 +22,6 @@
 
 ;; HTML
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp$" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.jspf$" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.tag$" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.vm$" . html-mode))
 
@@ -31,6 +29,11 @@
           (lambda ()
             (require 'rename-sgml-tag)
             (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+
+;; JSP
+(autoload 'crappy-jsp-mode "crappy-jsp-mode")
+(add-to-list 'auto-mode-alist '("\\.jsp$" . crappy-jsp-mode))
+(add-to-list 'auto-mode-alist '("\\.jspf$" . crappy-jsp-mode))
 
 ;; Ruby
 (autoload 'rhtml-mode "rhtml-mode")

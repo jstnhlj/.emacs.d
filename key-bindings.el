@@ -3,9 +3,6 @@
 (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "C-x C-c") 'delete-frame)
 
-;; Use C-x C-m to do M-x per Steve Yegge's advice
-(global-set-key "\C-x\C-m" 'execute-extended-command)
-
 ;; Completion that uses many different methods to find options.
 (global-set-key (kbd "C-.") 'hippie-expand)
 (global-set-key (kbd "C-:") 'hippie-expand-lines)
@@ -14,6 +11,9 @@
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;; Use C-x C-m to do M-x per Steve Yegge's advice
+(global-set-key (kbd "C-x C-m") 'smex)
 
 ;; Expand region (increases selected region by semantic units)
 (global-set-key (if is-mac (kbd "C-@") (kbd "C-'")) 'er/expand-region)
@@ -75,7 +75,7 @@
 
 ;; Make shell more convenient, and suspend-frame less
 (global-set-key (kbd "C-z") 'shell)
-(global-set-key (kbd "C-x C-z") 'suspend-frame)
+(global-set-key (kbd "C-x M-z") 'suspend-frame)
 
 ;; Zap to char
 (global-set-key (kbd "M-z") 'zap-to-char)
@@ -129,7 +129,9 @@
 ;; Navigation bindings
 (global-set-key (vector 'remap 'goto-line) 'goto-line-with-feedback)
 
+(global-set-key (kbd "<prior>") 'beginning-of-buffer)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
+(global-set-key (kbd "<next>") 'end-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
@@ -141,9 +143,14 @@
 
 ;; Webjump let's you quickly search google, wikipedia, emacs wiki
 (global-set-key (kbd "C-x g") 'webjump)
+(global-set-key (kbd "C-x M-g") 'browse-url-at-point)
 
 ;; Completion at point
 (global-set-key (kbd "C-<tab>") 'completion-at-point)
+
+;; Like isearch, but adds region (if any) to history and deactivates mark
+(global-set-key (kbd "C-s") 'isearch-forward-use-region)
+(global-set-key (kbd "C-r") 'isearch-backward-use-region)
 
 ;; Move more quickly
 (global-set-key (kbd "C-S-n") (lambda () (interactive) (next-line 5)))
@@ -182,7 +189,7 @@
 (global-set-key (kbd "C-c a") 'mark-whole-buffer)
 
 ;; Magit
-(global-set-key (kbd "C-x m") 'magit-status)
+(global-set-key (kbd "C-x m") 'magit-status) (autoload 'magit-status "magit")
 
 ;; Clever newlines
 (global-set-key (kbd "<C-return>") 'new-line-below)
@@ -217,7 +224,7 @@
 (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
 
 ;; Jump from file to containing directory
-(global-set-key (kbd "C-x C-j") 'dired-jump)
+(global-set-key (kbd "C-x C-j") 'dired-jump) (autoload 'dired-jump "dired")
 (global-set-key (kbd "C-x M-j") '(lambda () (interactive) (dired-jump 1)))
 
 ;; Easy-mode fullscreen rgrep

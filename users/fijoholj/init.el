@@ -12,3 +12,6 @@
      (require 'setup-slime-js)
      (setq slime-js-browser-command "open -a \"Google Chrome\"")
      (diminish 'slime-js-minor-mode)))
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))

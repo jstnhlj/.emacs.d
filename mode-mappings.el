@@ -90,6 +90,9 @@
 (autoload 'haml-mode "haml-mode")
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 
+;; Highlighting in editmsg-buffer for magit
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG" . conf-javaprop-mode))
+
 ;; org-mode
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 

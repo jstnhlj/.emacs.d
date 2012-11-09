@@ -4,7 +4,7 @@
 (global-set-key (kbd "C-x C-c") 'delete-frame)
 
 ;; Completion that uses many different methods to find options.
-(global-set-key (kbd "C-.") 'hippie-expand)
+(global-set-key (kbd "C-.") 'hippie-expand-no-case-fold)
 (global-set-key (kbd "C-:") 'hippie-expand-lines)
 
 ;; Smart M-x
@@ -29,6 +29,14 @@
 (global-set-key (kbd "C-æ") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-Æ") 'mc/mark-more-like-this-extended)
 (global-set-key (kbd "M-å") 'mc/mark-all-in-region)
+
+;; Symbol and word specific mark-more
+(global-set-key (kbd "s-æ") 'mc/mark-next-word-like-this)
+(global-set-key (kbd "s-å") 'mc/mark-previous-word-like-this)
+(global-set-key (kbd "M-s-æ") 'mc/mark-all-words-like-this)
+(global-set-key (kbd "s-Æ") 'mc/mark-next-symbol-like-this)
+(global-set-key (kbd "s-Å") 'mc/mark-previous-symbol-like-this)
+(global-set-key (kbd "M-s-Æ") 'mc/mark-all-symbols-like-this)
 
 ;; Set anchor to start rectangular-region-mode
 (global-set-key (kbd "H-SPC") 'set-rectangular-region-anchor)

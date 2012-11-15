@@ -36,9 +36,6 @@
 (setq-default save-place t)
 (setq save-place-file (expand-file-name ".places" dotfiles-dir))
 
-;; Lets start with a smattering of sanity
-(require 'sane-defaults)
-
 ;; Are we on a mac?
 (setq is-mac (equal system-type 'darwin))
 
@@ -55,7 +52,6 @@
    (cons 'magit melpa)
    (cons 'paredit melpa)
    (cons 'gist melpa)
-   (cons 'undo-tree melpa)
    (cons 'htmlize melpa)
    (cons 'elisp-slime-nav melpa)
    (cons 'elnode marmalade)
@@ -69,6 +65,9 @@
   (error
    (package-refresh-contents)
    (init--install-packages)))
+
+;; Lets start with a smattering of sanity
+(require 'sane-defaults)
 
 ;; Setup environment variables from the user's shell.
 (when is-mac (exec-path-from-shell-initialize))
@@ -112,6 +111,7 @@
 (require 'wgrep)
 (require 'smart-forward)
 (require 'change-inner)
+(require 'multifiles)
 
 ;; Fill column indicator
 (require 'fill-column-indicator)

@@ -49,8 +49,6 @@
 (add-to-list 'auto-mode-alist '("capfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.erb$" . rhtml-mode))
 
-(eval-after-load 'ruby-mode '(require 'setup-ruby-mode))
-
 ;; Puppet
 (autoload 'puppet-mode "puppet-mode")
 (add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
@@ -62,7 +60,6 @@
 ;; Clojure
 (autoload 'clojure-mode "clojure-mode")
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
-(add-hook 'clojure-mode-hook (lambda () (require 'setup-clojure-mode)))
 
 ;; SVG
 (add-to-list 'auto-mode-alist '("\\.svg$" . image-mode))
@@ -72,7 +69,9 @@
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
 (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
-(add-hook 'js2-mode-hook (lambda () (require 'setup-js2-mode)))
+
+;; Configuration files
+(add-to-list 'auto-mode-alist '("\\.offlineimaprc$" . conf-mode))
 
 ;; Snippets
 (add-to-list 'auto-mode-alist '("yasnippet/snippets" . snippet-mode))

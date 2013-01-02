@@ -24,6 +24,7 @@
         ("v" . "<C-268632086>")
         ("b" . "<C-268632066>")
         ("n" . "<C-268632078>")
+        (" " . "<C-268632064>")
         ("3" . "M-£")
         ("m" . "<C-268632077>")))
 
@@ -48,11 +49,20 @@
      (define-key js2-mode-map (my-js2-keys "ef") 'js2r-extract-function)
      (define-key js2-mode-map (my-js2-keys "em") 'js2r-extract-method)
      (define-key js2-mode-map (my-js2-keys "ip") 'js2r-introduce-parameter)
+     (define-key js2-mode-map (my-js2-keys "lp") 'js2r-localize-parameter)
      (define-key js2-mode-map (my-js2-keys "tf") 'js2r-toggle-function-expression-and-declaration)
      (define-key js2-mode-map (my-js2-keys "ao") 'js2r-arguments-to-object)
      (define-key js2-mode-map (my-js2-keys "uw") 'js2r-unwrap)
      (define-key js2-mode-map (my-js2-keys "wl") 'js2r-wrap-in-for-loop)
      (define-key js2-mode-map (my-js2-keys "3i") 'js2r-ternary-to-if)
+     (define-key js2-mode-map (my-js2-keys "jt") 'jump-to-test-file)
+     (define-key js2-mode-map (my-js2-keys "ot") 'jump-to-test-file-other-window)
+     (define-key js2-mode-map (my-js2-keys "js") 'jump-to-source-file)
+     (define-key js2-mode-map (my-js2-keys "os") 'jump-to-source-file-other-window)
+     (define-key js2-mode-map (my-js2-keys "jo") 'jump-between-source-and-test-files)
+     (define-key js2-mode-map (my-js2-keys "oo") 'jump-between-source-and-test-files-other-window)
+     (define-key js2-mode-map (my-js2-keys "ta") 'toggle-assert-refute)
+     (define-key js2-mode-map (my-js2-keys " " ) 'js2r-split-string)
      ))
 
 ;; (f6

@@ -8,9 +8,6 @@
 ;; Disallow scrolling with mouse wheel
 (mouse-wheel-mode nil)
 
-;; Don't screw up key bindings in magit-mode
-(add-to-list 'wrap-region-except-modes 'adventur-mode)
-
 ;; Font size
 (define-key global-map (kbd "M-s +") 'zoom-in)
 (define-key global-map (kbd "M-s -") 'zoom-out)
@@ -22,6 +19,14 @@
 
 ;; Experimental super on right command key. s-x is kill-region for instance.
 (setq mac-right-command-modifier 'super)
+
+;; Edit in Chrome
+
+(when (require 'edit-server nil t)
+  (edit-server-start))
+
+(setq edit-server-url-major-mode-alist
+      '(("github\\.com" . markdown-mode)))
 
 ;; PHP
 (autoload 'php-mode "php-mode")

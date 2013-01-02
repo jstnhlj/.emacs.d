@@ -24,7 +24,7 @@
 (global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
 
 ;; Mark additional regions matching current region
-(global-set-key (kbd "M-æ") 'mc/mark-all-like-this)
+(global-set-key (kbd "M-æ") 'mc/mark-all-like-this-dwim)
 (global-set-key (kbd "C-å") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-æ") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-Æ") 'mc/mark-more-like-this-extended)
@@ -86,8 +86,8 @@
 (global-set-key (kbd "C-x M-z") 'suspend-frame)
 
 ;; Zap to char
-(global-set-key (kbd "M-z") 'zap-to-char)
-(global-set-key (kbd "M-Z") 'zap-to-char-exclusive)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+(global-set-key (kbd "M-Z") 'zap-to-char)
 
 ;; iy-go-to-char - like f in Vim
 (global-set-key (kbd "M-m") 'jump-char-forward)
@@ -201,7 +201,11 @@
 (global-set-key (kbd "<s-down>") 'windmove-down)
 
 ;; Magit
-(global-set-key (kbd "C-x m") 'magit-status) (autoload 'magit-status "magit")
+(global-set-key (kbd "C-x m") 'magit-status)
+(autoload 'magit-status "magit")
+
+;; Mu4e
+(global-set-key (kbd "C-x M") 'mu4e-up-to-date-status)
 
 ;; Clever newlines
 (global-set-key (kbd "<C-return>") 'new-line-below)
@@ -215,8 +219,13 @@
 (global-set-key (kbd "<C-S-down>") 'move-line-down)
 (global-set-key (kbd "<C-S-up>") 'move-line-up)
 
+;; Fold the active region
+(global-set-key (kbd "C-c C-f") 'fold-this-all)
+(global-set-key (kbd "C-c C-F") 'fold-this)
+(global-set-key (kbd "C-c M-f") 'fold-this-unfold-all)
+
 ;; Yank and indent
-(global-set-key (kbd "C-S-y") 'yank-indented)
+(global-set-key (kbd "C-S-y") 'yank-unindented)
 
 ;; Toggle quotes
 (global-set-key (kbd "C-\"") 'toggle-quotes)
@@ -242,6 +251,10 @@
 ;; Easy-mode fullscreen rgrep
 (global-set-key (kbd "M-s s") 'git-grep-fullscreen)
 (global-set-key (kbd "M-s S") 'rgrep-fullscreen)
+
+;; Multi-occur
+(global-set-key (kbd "M-s m") 'multi-occur)
+(global-set-key (kbd "M-s M") 'multi-occur-in-matching-buffers)
 
 ;; Display and edit occurances of regexp in buffer
 (global-set-key (kbd "C-c o") 'occur)

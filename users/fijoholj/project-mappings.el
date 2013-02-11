@@ -35,8 +35,10 @@
 (define-key persp-mode-map (kbd "C-x p s") 'custom-persp/smajobber)
 
 (require 'smajobber-mode)
+
 (project-specifics "smajobber"
-                   (smajobber-mode))
+  (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*.xml" "*.properties")
+  (smajobber-mode))
 
 ;; FINN Oppdrag
 (defun custom-persp/oppdrag ()
@@ -49,11 +51,11 @@
 (require 'oppdrag-mode)
 
 (project-specifics "oppdrag-services"
-                   (set (make-local-variable 'slime-js-target-url) "http://local.finn.no:8080/")
-                   (set (make-local-variable 'slime-js-connect-url) "http://local.finn.no:8009")
-                   (set (make-local-variable 'slime-js-starting-url) "/oppdrag/")
-                   (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*jsTestDriver.conf" "*jawr.properties")
-                   (oppdrag-mode))
+  (set (make-local-variable 'slime-js-target-url) "http://local.finn.no:8080/")
+  (set (make-local-variable 'slime-js-connect-url) "http://local.finn.no:8009")
+  (set (make-local-variable 'slime-js-starting-url) "/oppdrag/")
+  (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*jsTestDriver.conf" "*jawr.properties")
+  (oppdrag-mode))
 
 ;; HDO
 (defun custom-persp/hdo ()

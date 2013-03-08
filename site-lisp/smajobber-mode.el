@@ -42,5 +42,20 @@ in an exploded war, re-deploy the file."
       (add-hook 'after-save-hook 'smajobber-hot-deploy-buffer-file nil t)
     (remove-hook 'after-save-hook 'smajobber-hot-deploy-buffer-file t)))
 
+(defun smajobber--setup-js-quirks ()
+  (when (string-match-p "smajobber" (buffer-file-name))
+    (fci-mode 1)
+    (setq js2-additional-externs '("testCase" "define"))
+    (setq js2r-path-to-tests "/test/javascript/tests/")
+    (setq js2r-path-to-sources "/main/webapp/smajobber/scripts/")
+    (setq js2r-test-suffix "Test")
+    (setq buster-testcase-snippets-enabled nil)
+    (make-variable-buffer-local 'buster-test-prefix)
+    (set (make-local-variable 'sgml-basic-offset) 4)
+    (make-variable-buffer-local 'js2-basic-offset)
+    (setq js2-basic-offset 4)))
+
+(add-hook 'js2-mode-hook 'smajobber--setup-js-quirks)
+
 (provide 'smajobber-mode)
 ;;; smajobber-mode.el ends here

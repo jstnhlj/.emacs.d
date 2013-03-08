@@ -66,7 +66,6 @@
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
    (cons 'clojure-mode melpa)
-   (cons 'clojure-test-mode melpa)
    (cons 'nrepl melpa)))
 
 (condition-case nil
@@ -146,9 +145,15 @@
 (require 'my-misc)
 (when is-mac (require 'mac))
 
+;; Diminish modeline clutter
+(require 'diminish)
+(diminish 'yas/minor-mode)
+(diminish 'eldoc-mode)
+(diminish 'paredit-mode)
+
 ;; Elisp go-to-definition with M-. and back again with M-,
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
-(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
 (eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
 ;; Email, baby
@@ -162,10 +167,6 @@
 ;; Run at full power please
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-
-;; Diminish modeline clutter
-(require 'diminish)
-(diminish 'yas/minor-mode)
 
 ;; Conclude init by setting up specifics for the current user
 (when (file-exists-p user-settings-dir)

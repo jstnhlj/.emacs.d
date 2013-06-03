@@ -14,9 +14,12 @@
 (defun paredit-wrap-square-from-behind ()
   (interactive)
   (forward-sexp -1)
-  (paredit-wrap-square)
-  (insert " ")
-  (forward-char -1))
+  (paredit-wrap-square))
+
+(defun paredit-wrap-curly-from-behind ()
+  (interactive)
+  (forward-sexp -1)
+  (paredit-wrap-curly))
 
 (defun paredit-kill-region-or-backward-word ()
   (interactive)
@@ -28,10 +31,13 @@
 (add-hook 'nrepl-mode-hook (lambda () (paredit-mode 1)))
 (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode 1)))
 
-(define-key paredit-mode-map (kbd "C-s-(") 'paredit-wrap-round)
-(define-key paredit-mode-map (kbd "C-s-)") 'paredit-wrap-round-from-behind)
-(define-key paredit-mode-map (kbd "M-s-(") 'paredit-wrap-square)
-(define-key paredit-mode-map (kbd "M-s-)") 'paredit-wrap-square-from-behind)
+(define-key paredit-mode-map (kbd "M-(") 'paredit-wrap-round)
+(define-key paredit-mode-map (kbd "M-)") 'paredit-wrap-round-from-behind)
+(define-key paredit-mode-map (kbd "M-s-8") 'paredit-wrap-square)
+(define-key paredit-mode-map (kbd "M-s-9") 'paredit-wrap-square-from-behind)
+(define-key paredit-mode-map (kbd "M-s-(") 'paredit-wrap-curly)
+(define-key paredit-mode-map (kbd "M-s-)") 'paredit-wrap-curly-from-behind)
+
 (define-key paredit-mode-map (kbd "C-w") 'paredit-kill-region-or-backward-word)
 
 ;; Change nasty paredit keybindings
@@ -44,6 +50,8 @@
     ("C-M-<left>"  "s-S-<left>"  paredit-backward-slurp-sexp)
     ("C-M-<right>" "s-S-<right>" paredit-backward-barf-sexp)))
 
+(define-key paredit-mode-map (kbd "s-r") 'paredit-raise-sexp)
+
 (--each my-nasty-paredit-keybindings-remappings
   (let ((original (car it))
         (replacement (cadr it))
@@ -53,6 +61,13 @@
 
 ;; don't hijack \ please
 (define-key paredit-mode-map (kbd "\\") nil)
+
+;; Enable `paredit-mode' in the minibuffer, during `eval-expression'.
+(defun conditionally-enable-paredit-mode ()
+  (if (eq this-command 'eval-expression)
+      (paredit-mode 1)))
+
+(add-hook 'minibuffer-setup-hook 'conditionally-enable-paredit-mode)
 
 ;; making paredit work with delete-selection-mode
 (put 'paredit-forward-delete 'delete-selection 'supersede)

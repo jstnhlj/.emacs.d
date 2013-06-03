@@ -11,8 +11,19 @@
 (setq-default js2-include-rhino-externs nil)
 (setq-default js2-include-gears-externs nil)
 (setq-default js2-concat-multiline-strings 'eol)
+(setq-default js2-rebind-eol-bol-keys nil)
+
+;; Let flycheck handle parse errors
+(setq-default js2-show-parse-errors nil)
+(setq-default js2-strict-missing-semi-warning nil)
+(setq-default js2-strict-trailing-comma-warning t) ;; jshint does not warn about this now for some reason
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (flycheck-mode 1)
+            (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))))
 
 (require 'js2-refactor)
+(js2r-add-keybindings-with-prefix "C-c C-m")
 
 (require 'js2-imenu-extras)
 (js2-imenu-extras-setup)
@@ -24,10 +35,14 @@
 (define-key js2-mode-map (kbd "C-c RET jo") 'jump-between-source-and-test-files)
 (define-key js2-mode-map (kbd "C-c RET oo") 'jump-between-source-and-test-files-other-window)
 
+(define-key js2-mode-map (kbd "C-c RET dp") 'js2r-duplicate-object-property-node)
+
 (define-key js2-mode-map (kbd "C-c RET ta") 'toggle-assert-refute)
 
 (defadvice js2r-inline-var (after reindent-buffer activate)
   (cleanup-buffer))
+
+(add-hook 'js2-mode-hook (lambda () (smartparens-mode 1)))
 
 (defun js2-hide-test-functions ()
   (interactive)
@@ -50,26 +65,23 @@
 
 (define-key js2-mode-map (kbd "TAB") 'js2-tab-properly)
 
-;; Don't redefine C-a for me please, js2-mode
-(define-key js2-mode-map (kbd "C-a") nil)
-
 ;; When renaming/deleting js-files, check for corresponding testfile
 (define-key js2-mode-map (kbd "C-x C-r") 'js2r-rename-current-buffer-file)
 (define-key js2-mode-map (kbd "C-x C-k") 'js2r-delete-current-buffer-file)
 
 ;; Use lambda for anonymous functions
-(font-lock-add-keywords
- 'js2-mode `(("\\(function\\) *("
-              (0 (progn (compose-region (match-beginning 1)
-                                        (match-end 1) "\u0192")
-                        nil)))))
+;; (font-lock-add-keywords
+;;  'js2-mode `(("\\(function\\) *("
+;;               (0 (progn (compose-region (match-beginning 1)
+;;                                         (match-end 1) "\u0192")
+;;                         nil)))))
 
 ;; Use right arrow for return in one-line functions
-(font-lock-add-keywords
- 'js2-mode `(("function *([^)]*) *{ *\\(return\\) "
-              (0 (progn (compose-region (match-beginning 1)
-                                        (match-end 1) "\u2190")
-                        nil)))))
+;; (font-lock-add-keywords
+;;  'js2-mode `(("function *([^)]*) *{ *\\(return\\) "
+;;               (0 (progn (compose-region (match-beginning 1)
+;;                                         (match-end 1) "\u2190")
+;;                         nil)))))
 
 ;; After js2 has parsed a js file, we look for jslint globals decl comment ("/* global Fred, _, Harry */") and
 ;; add any symbols to a buffer-local var of acceptable global vars
@@ -87,6 +99,38 @@
                        (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) (match-string-no-properties 1 btext) "")
                        " *, *" t))
                 ))))
+
+(require 'json)
+
+;; Tern.JS
+(add-to-list 'load-path (expand-file-name "tern/emacs" site-lisp-dir))
+(autoload 'tern-mode "tern.el" nil t)
+;;(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+(eval-after-load 'auto-complete
+  '(eval-after-load 'tern
+     '(progn
+        (require 'tern-auto-complete)
+        (tern-ac-setup))))
+
+
+(defun my-aget (key map)
+  (cdr (assoc key map)))
+
+(defun js2-fetch-autolint-externs (file)
+  (let* ((settings (with-temp-buffer
+                     (insert-file-literally file)
+                     (javascript-mode)
+                     (let (kill-ring) (kill-comment 1000))
+                     (->> (buffer-substring (point-min) (point-max))
+                       (s-trim)
+                       (s-chop-prefix "module.exports = ")
+                       (s-chop-suffix ";")
+                       (json-read-from-string))))
+         (predef (->> settings
+                   (my-aget 'linterOptions)
+                   (my-aget 'predef))))
+    (--each (append predef nil)
+      (add-to-list 'js2-additional-externs it))))
 
 (defun cjsp--eldoc-innards (beg)
   (save-excursion

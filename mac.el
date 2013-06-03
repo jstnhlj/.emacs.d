@@ -67,11 +67,10 @@
           (when timer (cancel-timer timer)))))))
 
 ;; mac friendly font
-(set-face-attribute 'default nil :font "Monaco-16")
-
-;; make sure path is correct when launched as application
-(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-(push "/usr/local/bin" exec-path)
+(when window-system
+  (setq magnars/default-font "-apple-Monaco-medium-normal-normal-*-16-*-*-*-m-0-iso10646-1")
+  (setq magnars/presentation-font "-apple-Monaco-medium-normal-normal-*-28-*-*-*-m-0-iso10646-1")
+  (set-face-attribute 'default nil :font magnars/default-font))
 
 ;; keybinding to toggle full screen mode
 (global-set-key (quote [M-f10]) (quote ns-toggle-fullscreen))

@@ -187,18 +187,30 @@ region-end is used."
                     (goto-char (point-max))
                     (line-number-at-pos)))))
 
+(require 's)
+
 (defun incs (s &optional num)
-  (number-to-string (+ (or num 1) (string-to-number s))))
+  (let* ((inc (or num 1))
+         (new-number (number-to-string (+ inc (string-to-number s))))
+         (zero-padded? (s-starts-with? "0" s)))
+    (if zero-padded?
+        (s-pad-left (length s) "0" new-number)
+      new-number)))
 
 (defun change-number-at-point (arg)
   (interactive "p")
   (unless (or (looking-at "[0-9]")
               (looking-back "[0-9]"))
     (error "No number to change at point"))
-  (while (looking-back "[0-9]")
-    (forward-char -1))
-  (re-search-forward "[0-9]+" nil)
-  (replace-match (incs (match-string 0) arg) nil nil))
+  (save-excursion
+   (while (looking-back "[0-9]")
+     (forward-char -1))
+   (re-search-forward "[0-9]+" nil)
+   (replace-match (incs (match-string 0) arg) nil nil)))
+
+(defun subtract-number-at-point (arg)
+  (interactive "p")
+  (change-number-at-point (- arg)))
 
 (defun replace-next-underscore-with-camel (arg)
   (interactive "p")

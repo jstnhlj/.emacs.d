@@ -100,6 +100,10 @@
 ;; Default setup of smartparens
 (require 'smartparens-config)
 (setq sp-autoescape-string-quote nil)
+(--each '(js2-mode-hook
+          css-mode-hook
+          restclient-mode-hook)
+  (add-hook it 'turn-on-smartparens-mode))
 
 ;; Language specific setup files
 (eval-after-load 'js2-mode '(require 'setup-js2-mode))
@@ -107,11 +111,10 @@
 (eval-after-load 'clojure-mode '(require 'setup-clojure-mode))
 (eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
 
-;; Load skewer when asked for
+;; Load stuff on demand
 (autoload 'skewer-start "setup-skewer" nil t)
 (autoload 'skewer-demo "setup-skewer" nil t)
-
-;; Load autocomplete on demand
+(autoload 'flycheck-mode "setup-flycheck" nil t)
 (autoload 'auto-complete-mode "auto-complete" nil t)
 
 ;; Map files to modes

@@ -7,7 +7,6 @@
 (setq-default js2-mirror-mode nil)
 (setq-default js2-strict-inconsistent-return-warning nil)
 (setq-default js2-auto-indent-p t)
-(setq-default js2-rebind-eol-bol-keys nil)
 (setq-default js2-include-rhino-externs nil)
 (setq-default js2-include-gears-externs nil)
 (setq-default js2-concat-multiline-strings 'eol)
@@ -17,10 +16,8 @@
 (setq-default js2-show-parse-errors nil)
 (setq-default js2-strict-missing-semi-warning nil)
 (setq-default js2-strict-trailing-comma-warning t) ;; jshint does not warn about this now for some reason
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (flycheck-mode 1)
-            (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))))
+
+(add-hook 'js2-mode-hook (lambda () (flycheck-mode 1)))
 
 (require 'js2-refactor)
 (js2r-add-keybindings-with-prefix "C-c C-m")
@@ -41,8 +38,6 @@
 
 (defadvice js2r-inline-var (after reindent-buffer activate)
   (cleanup-buffer))
-
-(add-hook 'js2-mode-hook (lambda () (smartparens-mode 1)))
 
 (defun js2-hide-test-functions ()
   (interactive)

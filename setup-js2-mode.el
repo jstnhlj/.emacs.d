@@ -1,3 +1,5 @@
+;;; setup-js2-mode.el --- tweak js2 settings -*- lexical-binding: t; -*-
+
 (setq-default js2-allow-rhino-new-expr-initializer nil)
 (setq-default js2-auto-indent-p nil)
 (setq-default js2-enter-indents-newline nil)
@@ -24,6 +26,54 @@
 
 (require 'js2-imenu-extras)
 (js2-imenu-extras-setup)
+
+;; Set up wrapping of pairs, with the possiblity of semicolons thrown into the mix
+
+(defun js2r--needs-semi ()
+  (and (eolp) (save-excursion
+                (back-to-indentation)
+                (not (or (looking-at "if ")
+                         (looking-at "function ")
+                         (looking-at "for ")
+                         (looking-at "while ")
+                         (looking-at "try "))))))
+
+(defun js2r--setup-wrapping-pair (open close semicolonp)
+  (define-key js2-mode-map (kbd open) (λ (js2r--self-insert-wrapping open close semicolonp)))
+  (define-key js2-mode-map (kbd close) (λ (js2r--self-insert-closing open close))))
+
+(defun js2r--self-insert-wrapping (open close semicolonp)
+  (cond
+   ((use-region-p)
+    (save-excursion
+      (let ((beg (region-beginning))
+            (end (region-end)))
+        (goto-char end)
+        (insert close)
+        (goto-char beg)
+        (insert open))))
+
+   ((funcall semicolonp)
+    (insert open close ";")
+    (backward-char (1+ (length close))))
+
+   (:else
+    (insert open close)
+    (backward-char (length close)))))
+
+(defun js2r--self-insert-closing (open close)
+  (if (and (looking-back (regexp-quote open))
+           (looking-at (regexp-quote close)))
+      (forward-char (length close))
+    (funcall 'self-insert-command 1)))
+
+(js2r--setup-wrapping-pair "(" ")" 'js2r--needs-semi)
+(js2r--setup-wrapping-pair "{" "}" 'js2r--needs-semi)
+(js2r--setup-wrapping-pair "[" "]" 'eolp)
+(js2r--setup-wrapping-pair "\"" "\"" 'eolp)
+(js2r--setup-wrapping-pair "'" "'" 'eolp)
+
+;;
 
 (define-key js2-mode-map (kbd "C-c RET jt") 'jump-to-test-file)
 (define-key js2-mode-map (kbd "C-c RET ot") 'jump-to-test-file-other-window)
@@ -65,18 +115,18 @@
 (define-key js2-mode-map (kbd "C-x C-k") 'js2r-delete-current-buffer-file)
 
 ;; Use lambda for anonymous functions
-;; (font-lock-add-keywords
-;;  'js2-mode `(("\\(function\\) *("
-;;               (0 (progn (compose-region (match-beginning 1)
-;;                                         (match-end 1) "\u0192")
-;;                         nil)))))
+(font-lock-add-keywords
+ 'js2-mode `(("\\(function\\) *("
+              (0 (progn (compose-region (match-beginning 1)
+                                        (match-end 1) "\u0192")
+                        nil)))))
 
 ;; Use right arrow for return in one-line functions
-;; (font-lock-add-keywords
-;;  'js2-mode `(("function *([^)]*) *{ *\\(return\\) "
-;;               (0 (progn (compose-region (match-beginning 1)
-;;                                         (match-end 1) "\u2190")
-;;                         nil)))))
+(font-lock-add-keywords
+ 'js2-mode `(("function *([^)]*) *{ *\\(return\\) "
+              (0 (progn (compose-region (match-beginning 1)
+                                        (match-end 1) "\u2190")
+                        nil)))))
 
 ;; After js2 has parsed a js file, we look for jslint globals decl comment ("/* global Fred, _, Harry */") and
 ;; add any symbols to a buffer-local var of acceptable global vars

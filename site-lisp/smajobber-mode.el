@@ -49,7 +49,7 @@ in an exploded war, re-deploy the file."
     (setq js2r-path-to-tests "/test/javascript/tests/")
     (setq js2r-path-to-sources "/main/webapp/scripts/smajobber/")
     (setq js2r-test-suffix "Test")
-    (setq buster-testcase-snippets-enabled nil)
+    (setq buster-testcase-snippets-enabled t)
     (make-variable-buffer-local 'buster-test-prefix)
     (set (make-local-variable 'sgml-basic-offset) 4)
     (make-variable-buffer-local 'js2-basic-offset)

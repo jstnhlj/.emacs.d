@@ -13,8 +13,8 @@
        (error "grep.el: No `grep-find-template' available"))
       (t (let* ((regexp (grep-read-regexp))
                 (files (grep-read-files regexp))
-                (dir (read-directory-name "Base directory: "
-                                          nil default-directory t))
+                (dir (ido-read-directory-name "Base directory: "
+                                              nil default-directory t))
                 (confirm (equal current-prefix-arg '(4))))
            (list regexp files dir confirm))))))
   (window-configuration-to-register ?$)
@@ -43,8 +43,8 @@
    (let* ((regexp (grep-read-regexp))
           (files (grep-read-files regexp))
           (files (if (string= "* .*" files) "*" files))
-          (dir (read-directory-name "Base directory: "
-                                    nil default-directory t))
+          (dir (ido-read-directory-name "Base directory: "
+                                        nil default-directory t))
           (confirm (equal current-prefix-arg '(4))))
      (list regexp files dir confirm)))
   (let ((command (format "cd %s && git --no-pager grep %s %s -e %S -- '%s' "
@@ -111,7 +111,8 @@
     (goto-char it))
   (mc/maybe-multiple-cursors-mode))
 
-(add-to-list 'mc--default-cmds-to-run-once 'mc/add-cursors-to-all-matches)
+(eval-after-load "multiple-cursors"
+  '(add-to-list 'mc--default-cmds-to-run-once 'mc/add-cursors-to-all-matches))
 
 (eval-after-load "wgrep"
   '(define-key wgrep-mode-map (kbd "C-c C-æ") 'mc/add-cursors-to-all-matches))

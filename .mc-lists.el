@@ -33,6 +33,7 @@
         forward-paragraph
         forward-sentence
         forward-sexp
+        god-mode-repeat
         hippie-expand-no-case-fold
         html-wrap-in-tag
         js2-beginning-of-line
@@ -74,6 +75,7 @@
         paredit-comment-dwim
         paredit-doublequote
         paredit-forward
+        paredit-forward-barf-sexp
         paredit-forward-delete
         paredit-forward-down
         paredit-forward-kill-word
@@ -90,6 +92,7 @@
         paredit-reindent-defun
         paredit-semicolon
         paredit-splice-sexp
+        paredit-splice-sexp-killing-backward
         paredit-split-sexp
         paredit-wrap-round
         paredit-wrap-round-from-behind
@@ -125,7 +128,7 @@
         transpose-sexps
         wrap-region-trigger
         yank-indented
-        yas/expand
+        yas-expand
         zap-up-to-char
         ))
 
@@ -147,6 +150,7 @@
         mc/add-cursor-on-click
         mc/add-cursors-to-all-matches
         multiple-cursors-mode
+        god-local-mode
         persp-switch
         shell
         smex

@@ -30,7 +30,7 @@
 (defun custom-persp/smajobber ()
   (interactive)
   (custom-persp "smajobber"
-                (find-file "~/finn/code/smajobber/")))
+                (find-file "~/finn/smajobber/")))
 
 (define-key persp-mode-map (kbd "C-x p s") 'custom-persp/smajobber)
 
@@ -44,7 +44,7 @@
 (defun custom-persp/oppdrag ()
   (interactive)
   (custom-persp "oppdrag"
-                (find-file "~/finn/code/oppdrag-services/app-main/web/src/")))
+                (find-file "~/finn/oppdrag-services/app-main/web/src/")))
 
 (define-key persp-mode-map (kbd "C-x p o") 'custom-persp/oppdrag)
 

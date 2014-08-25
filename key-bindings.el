@@ -72,7 +72,6 @@
 ;; Use shell-like backspace C-h, rebind help to F1
 (define-key key-translation-map [?\C-h] [?\C-?])
 (global-set-key (kbd "<f1>") 'help-command)
-(define-key god-local-mode-map (kbd "h") 'backward-delete-char)
 
 (global-set-key (kbd "M-h") 'kill-region-or-backward-word)
 
@@ -149,6 +148,8 @@
 ;; toggle two most recent buffers
 (fset 'quick-switch-buffer [?\C-x ?b return])
 (global-set-key (kbd "s-b") 'quick-switch-buffer)
+
+(global-set-key (kbd "s-y") 'bury-buffer)
 
 ;; Revert without any fuss
 (global-set-key (kbd "M-<escape>") (λ (revert-buffer t t)))
@@ -323,6 +324,7 @@
 (global-set-key (kbd "C-x C-o ft") (ffip-create-pattern-file-finder "*.feature"))
 (global-set-key (kbd "C-x C-o cl") (ffip-create-pattern-file-finder "*.clj"))
 (global-set-key (kbd "C-x C-o el") (ffip-create-pattern-file-finder "*.el"))
+(global-set-key (kbd "C-x C-o ed") (ffip-create-pattern-file-finder "*.edn"))
 (global-set-key (kbd "C-x C-o md") (ffip-create-pattern-file-finder "*.md"))
 (global-set-key (kbd "C-x C-o rb") (ffip-create-pattern-file-finder "*.rb"))
 (global-set-key (kbd "C-x C-o or") (ffip-create-pattern-file-finder "*.org"))

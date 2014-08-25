@@ -13,6 +13,7 @@
         back-to-indentation-or-beginning
         backward-sexp
         c-electric-backspace
+        c-electric-colon
         c-electric-delete-forward
         c-electric-paren
         c-electric-pound
@@ -22,11 +23,20 @@
         change-inner
         change-number-at-point
         change-outer
+        cider-eval-last-sexp
+        clj-hippie-expand-no-case-fold
+        cljr-cycle-coll
+        cljr-raise-sexp
+        cljr-slash
+        cljr-splice-sexp-killing-backward
+        cljr-unwind
+        clojure-toggle-keyword-string
         cua-replace-region
         cua-set-mark
         delete-blank-lines
         delete-indentation
         dired-back-to-start-of-files
+        down-list
         duplicate-current-line-or-region
         end-of-buffer
         eval-and-replace
@@ -37,6 +47,7 @@
         forward-sexp
         god-mode-repeat
         hippie-expand-no-case-fold
+        html-paragraph
         html-wrap-in-tag
         insert-postfix-whitespace
         js2-beginning-of-line
@@ -46,11 +57,15 @@
         js2r-move-line-up
         js2r-split-string
         js2r-var-to-this
+        jump-char-forward
+        jump-char-process-char
         kill-and-retry-line
         kill-region-or-backward-word
         kill-sexp
+        live-cycle-clj-coll
         magit-stage-item
         markdown-enter-key
+        markdown-insert-link
         move-line-down
         move-line-up
         move-text-down
@@ -58,6 +73,7 @@
         move-to-window-line-top-bottom
         new-line-above
         open-line-above
+        open-line-and-indent
         open-line-below
         org-beginning-of-line
         org-delete-backward-char
@@ -73,6 +89,7 @@
         paredit-backslash
         paredit-backward
         paredit-backward-barf-sexp
+        paredit-backward-down
         paredit-backward-slurp-sexp
         paredit-backward-up
         paredit-close-round
@@ -132,6 +149,8 @@
         transpose-params
         transpose-sexps
         wrap-region-trigger
+        yaml-electric-backspace
+        yaml-electric-dash-and-dot
         yank-indented
         yas-expand
         zap-up-to-char
@@ -140,6 +159,7 @@
 (setq mc/cmds-to-run-once
       '(
         adv-insert-new-number
+        beginning-of-buffer
         cleanup-buffer
         describe-key
         dired-toggle-read-only
@@ -153,6 +173,7 @@
         js2r-extract-var
         js2r-rename-var
         jump-between-source-and-test-files
+        kill-this-buffer
         kmacro-end-or-call-macro
         magit-status
         mc/add-cursor-on-click

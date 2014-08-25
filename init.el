@@ -56,7 +56,6 @@
    '(magit
      paredit
      move-text
-     god-mode
      gist
      htmlize
      visual-regexp
@@ -79,6 +78,8 @@
      gitconfig-mode
      gitignore-mode
      clojure-mode
+     groovy-mode
+     prodigy
      cider
      cider-tracing)))
 
@@ -103,10 +104,6 @@
 (setq guide-key/recursive-key-sequence-flag t)
 (setq guide-key/popup-window-position 'bottom)
 
-;; god-mode
-(require 'god-mode)
-(global-set-key (kbd "<escape>") 'god-local-mode)
-
 ;; Setup extensions
 (eval-after-load 'ido '(require 'setup-ido))
 (eval-after-load 'org '(require 'setup-org))
@@ -121,6 +118,9 @@
 (require 'setup-html-mode)
 (require 'setup-paredit)
 
+(require 'prodigy)
+(global-set-key (kbd "C-x M-m") 'prodigy)
+
 ;; Font lock dash.el
 (eval-after-load "dash" '(dash-enable-font-lock))
 
@@ -130,8 +130,10 @@
 (--each '(css-mode-hook
           restclient-mode-hook
           js-mode-hook
+          java-mode
           ruby-mode
-          markdown-mode)
+          markdown-mode
+          groovy-mode)
   (add-hook it 'turn-on-smartparens-mode))
 
 ;; Language specific setup files

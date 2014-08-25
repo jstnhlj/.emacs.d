@@ -56,6 +56,10 @@
 (recentf-mode 1)
 (setq recentf-max-saved-items 100) ;; just 20 is too recent
 
+;; Save minibuffer history
+(savehist-mode 1)
+(setq history-length 1000)
+
 ;; Undo/redo window configuration with C-c <left>/<right>
 (winner-mode 1)
 
@@ -93,6 +97,9 @@
 
 ;; Sentences do not need double spaces to end. Period.
 (set-default 'sentence-end-double-space nil)
+
+;; 80 chars is a good width.
+(set-default 'fill-column 80)
 
 ;; Add parts of each file's directory to the buffer name if not unique
 (require 'uniquify)

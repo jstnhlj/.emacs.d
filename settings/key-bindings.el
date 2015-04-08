@@ -250,9 +250,6 @@
 (global-set-key (kbd "C-x m") 'magit-status)
 (autoload 'magit-status "magit")
 
-;; Mu4e
-(global-set-key (kbd "C-x M") 'mu4e-up-to-date-status)
-
 ;; Clever newlines
 (global-set-key (kbd "C-o") 'open-line-and-indent)
 (global-set-key (kbd "<C-return>") 'open-line-below)
@@ -337,6 +334,8 @@
 (global-set-key (kbd "C-x C-o in") (ffip-create-pattern-file-finder "*.ini"))
 (global-set-key (kbd "C-x C-o gr") (ffip-create-pattern-file-finder "*.groovy"))
 (global-set-key (kbd "C-x C-o ga") (ffip-create-pattern-file-finder "*.gradle"))
+(global-set-key (kbd "C-x C-o sc") (ffip-create-pattern-file-finder "*.scala"))
+(global-set-key (kbd "C-x C-o co") (ffip-create-pattern-file-finder "*.conf"))
 (global-set-key (kbd "C-x C-o !") (ffip-create-pattern-file-finder "*"))
 
 ;; View occurrence in occur mode

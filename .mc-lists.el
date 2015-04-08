@@ -11,6 +11,7 @@
         adv-open-curly
         adv-tab
         back-to-indentation-or-beginning
+        backward-kill-sexp
         backward-sexp
         c-electric-backspace
         c-electric-colon
@@ -29,10 +30,13 @@
         cljr-raise-sexp
         cljr-slash
         cljr-splice-sexp-killing-backward
+        cljr-thread-first-all
         cljr-unwind
         clojure-toggle-keyword-string
+        complete-symbol
         cua-replace-region
         cua-set-mark
+        cycle-spacing
         delete-blank-lines
         delete-indentation
         dired-back-to-start-of-files
@@ -41,6 +45,7 @@
         end-of-buffer
         eval-and-replace
         eval-last-sexp
+        fill-paragraph
         fold-this
         forward-paragraph
         forward-sentence
@@ -59,6 +64,7 @@
         js2r-var-to-this
         jump-char-forward
         jump-char-process-char
+        keyboard-escape-quit
         kill-and-retry-line
         kill-region-or-backward-word
         kill-sexp
@@ -72,6 +78,7 @@
         move-text-up
         move-to-window-line-top-bottom
         new-line-above
+        new-line-dwim
         open-line-above
         open-line-and-indent
         open-line-below
@@ -92,6 +99,7 @@
         paredit-backward-down
         paredit-backward-slurp-sexp
         paredit-backward-up
+        paredit-close-curly
         paredit-close-round
         paredit-close-square
         paredit-comment-dwim
@@ -106,6 +114,7 @@
         paredit-join-sexps
         paredit-kill
         paredit-kill-region-or-backward-word
+        paredit-meta-doublequote
         paredit-newline
         paredit-open-curly
         paredit-open-round
@@ -122,6 +131,7 @@
         quoted-insert
         save-region-or-current-line
         sgml-delete-tag
+        sgml-maybe-name-self
         sgml-slash
         skeleton-pair-insert-maybe
         slime-space
@@ -148,6 +158,8 @@
         touch-buffer-file
         transpose-params
         transpose-sexps
+        wdired-next-line
+        wdired-previous-line
         wrap-region-trigger
         yaml-electric-backspace
         yaml-electric-dash-and-dot
@@ -160,6 +172,7 @@
       '(
         adv-insert-new-number
         beginning-of-buffer
+        cider-eval-ns-form
         cleanup-buffer
         describe-key
         dired-toggle-read-only
@@ -182,6 +195,7 @@
         ns-prev-frame
         persp-switch
         shell
+        skewer-load-buffer
         smex
         wgrep-change-to-wgrep-mode
         wgrep-finish-edit

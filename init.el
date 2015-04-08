@@ -10,8 +10,11 @@
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
 
+(setq settings-dir
+      (expand-file-name "settings" user-emacs-directory))
+
 ;; Set up load path
-(add-to-list 'load-path user-emacs-directory)
+(add-to-list 'load-path settings-dir)
 (add-to-list 'load-path site-lisp-dir)
 
 ;; Keep emacs Custom-settings in separate file
@@ -59,9 +62,14 @@
      gist
      htmlize
      visual-regexp
+     markdown-mode
+     fill-column-indicator
      flycheck
+     flycheck-pos-tip
+     flycheck-clojure
      flx
      flx-ido
+     dired-details
      css-eldoc
      yasnippet
      smartparens
@@ -76,12 +84,13 @@
      elisp-slime-nav
      git-commit-mode
      gitconfig-mode
+     dockerfile-mode
      gitignore-mode
      clojure-mode
      groovy-mode
      prodigy
      cider
-     cider-tracing)))
+     )))
 
 (condition-case nil
     (init--install-packages)
@@ -145,8 +154,8 @@
 ;; Load stuff on demand
 (autoload 'skewer-start "setup-skewer" nil t)
 (autoload 'skewer-demo "setup-skewer" nil t)
-(autoload 'flycheck-mode "setup-flycheck" nil t)
 (autoload 'auto-complete-mode "auto-complete" nil t)
+(eval-after-load 'flycheck '(require 'setup-flycheck))
 
 ;; Map files to modes
 (require 'mode-mappings)
@@ -177,6 +186,12 @@
 (require 'change-inner)
 (require 'multifiles)
 
+;; Don't use expand-region fast keys
+(setq expand-region-fast-keys-enabled nil)
+
+;; Show expand-region command used
+(setq er--show-expansion-message t)
+
 ;; Fill column indicator
 (require 'fill-column-indicator)
 (setq fci-rule-color "#111122")
@@ -200,9 +215,6 @@
 ;; Elisp go-to-definition with M-. and back again with M-,
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
-
-;; Email, baby
-(require 'setup-mu4e)
 
 ;; Emacs server
 (require 'server)

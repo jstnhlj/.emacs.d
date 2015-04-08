@@ -1,6 +1,6 @@
 ;; Default js indentation levels
-(setq-default js2-basic-offset 4)
-(setq js-indent-level 4)
+(setq-default js2-basic-offset 2)
+(setq js-indent-level 2)
 
 ;; Disallow scrolling with mouse wheel
 (when window-system

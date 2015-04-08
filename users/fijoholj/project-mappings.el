@@ -27,44 +27,48 @@
 (define-key persp-mode-map (kbd "C-<f6>") 'custom-persp/org)
 
 ;; Småjobber
-(defun custom-persp/smajobber ()
-  (interactive)
-  (custom-persp "smajobber"
-                (find-file "~/finn/smajobber/")))
+;; (defun custom-persp/smajobber ()
+;;   (interactive)
+;;   (custom-persp "smajobber"
+;;                 (find-file "~/finn/smajobber/")))
 
-(define-key persp-mode-map (kbd "C-x p s") 'custom-persp/smajobber)
+;; (define-key persp-mode-map (kbd "C-x p s") 'custom-persp/smajobber)
 
-(require 'smajobber-mode)
+;; (require 'smajobber-mode)
 
-(project-specifics "smajobber"
-  (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*.xml" "*.properties")
-  (smajobber-mode))
+;; (project-specifics "smajobber"
+;;   (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*.xml" "*.properties")
+;;   (smajobber-mode))
 
 ;; FINN Oppdrag
-(defun custom-persp/oppdrag ()
+;; (defun custom-persp/oppdrag ()
+;;   (interactive)
+;;   (custom-persp "oppdrag"
+;;                 (find-file "~/finn/oppdrag-services/app-main/web/src/")))
+
+;; (define-key persp-mode-map (kbd "C-x p o") 'custom-persp/oppdrag)
+
+;; (require 'oppdrag-mode)
+
+;; (project-specifics "oppdrag-services"
+;;   (set (make-local-variable 'slime-js-target-url) "http://local.finn.no:8080/")
+;;   (set (make-local-variable 'slime-js-connect-url) "http://local.finn.no:8009")
+;;   (set (make-local-variable 'slime-js-starting-url) "/oppdrag/")
+;;   (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*jsTestDriver.conf" "*jawr.properties")
+;;   (oppdrag-mode))
+
+;; Spond
+(defun custom-persp/spond ()
   (interactive)
-  (custom-persp "oppdrag"
-                (find-file "~/finn/oppdrag-services/app-main/web/src/")))
+  (custom-persp "spond"
+                (find-file "~/projects/spond-frontend/spond-web-client-new/")))
 
-(define-key persp-mode-map (kbd "C-x p o") 'custom-persp/oppdrag)
+(define-key persp-mode-map (kbd "C-x p s") 'custom-persp/spond)
 
-(require 'oppdrag-mode)
+(project-specifics "spond-frontend"
+  (set (make-local-variable 'sgml-basic-offset) 4)
+  (set (make-local-variable 'js2-basic-offset) 4)
+  (set (make-local-variable 'js-indent-level) 4))
 
-(project-specifics "oppdrag-services"
-  (set (make-local-variable 'slime-js-target-url) "http://local.finn.no:8080/")
-  (set (make-local-variable 'slime-js-connect-url) "http://local.finn.no:8009")
-  (set (make-local-variable 'slime-js-starting-url) "/oppdrag/")
-  (ffip-local-patterns "*.js" "*.jsp" "*.css" "*.org" "*.vm" "*jsTestDriver.conf" "*jawr.properties")
-  (oppdrag-mode))
 
-;; HDO
-(defun custom-persp/hdo ()
-  (interactive)
-  (custom-persp "hdo"
-                (find-file "~/projects/hdo-site/")))
 
-(project-specifics "hdo-site"
-                   (setq js2r-path-to-tests "/spec/javascript/")
-                   (setq js2r-path-to-sources "/app/assets/javascripts/"))
-
-(define-key persp-mode-map (kbd "C-x p h") 'custom-persp/hdo)

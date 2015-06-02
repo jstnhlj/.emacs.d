@@ -90,6 +90,7 @@
      groovy-mode
      prodigy
      cider
+     js2-mode
      )))
 
 (condition-case nil

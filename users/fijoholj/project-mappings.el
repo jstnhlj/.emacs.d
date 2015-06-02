@@ -18,13 +18,29 @@
 
 (define-key persp-mode-map (kbd "C-x p e") 'custom-persp/emacs)
 
-;; Org
-(defun custom-persp/org ()
+;; Potion
+(defun custom-persp/potion ()
   (interactive)
-  (custom-persp "org"
-                (find-file "~/Dropbox/org/")))
+  (custom-persp "Potion"
+                (find-file "~/projects/potion/")))
 
-(define-key persp-mode-map (kbd "C-<f6>") 'custom-persp/org)
+(define-key persp-mode-map (kbd "C-x p p") 'custom-persp/potion)
+
+;; Nyhetstavla
+(defun custom-persp/nyhetstavla ()
+  (interactive)
+  (custom-persp "Nyhetstavla"
+                (find-file "~/projects/nyhetstavla/")))
+
+(define-key persp-mode-map (kbd "C-x p n") 'custom-persp/nyhetstavla)
+
+;; Bidra web
+(defun custom-persp/bidra-web ()
+  (interactive)
+  (custom-persp "bidra-web"
+                (find-file "~/projects/bidra-web/")))
+
+(define-key persp-mode-map (kbd "C-x p b") 'custom-persp/bidra-web)
 
 ;; Småjobber
 ;; (defun custom-persp/smajobber ()
@@ -69,6 +85,3 @@
   (set (make-local-variable 'sgml-basic-offset) 4)
   (set (make-local-variable 'js2-basic-offset) 4)
   (set (make-local-variable 'js-indent-level) 4))
-
-
-

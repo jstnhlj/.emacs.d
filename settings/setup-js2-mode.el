@@ -1,5 +1,22 @@
 ;;; setup-js2-mode.el --- tweak js2 settings -*- lexical-binding: t; -*-
 
+;;; magnars/js2-mode deps
+(defsubst js2-mode-inside-comment-or-string ()
+  "Return non-nil if inside a comment or string."
+  (or
+   (let ((comment-start
+          (save-excursion
+            (goto-char (point-at-bol))
+            (if (re-search-forward "//" (point-at-eol) t)
+                (match-beginning 0)))))
+     (and comment-start
+          (<= comment-start (point))))
+   (let ((parse-state (save-excursion
+                        (syntax-ppss (point)))))
+     (or (nth 3 parse-state)
+         (nth 4 parse-state)))))
+;;;
+
 (setq-default js2-allow-rhino-new-expr-initializer nil)
 (setq-default js2-auto-indent-p nil)
 (setq-default js2-enter-indents-newline nil)

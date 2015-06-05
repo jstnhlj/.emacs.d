@@ -91,6 +91,7 @@
      prodigy
      cider
      js2-mode
+     js2-refactor
      )))
 
 (condition-case nil

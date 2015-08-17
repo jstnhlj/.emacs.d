@@ -42,6 +42,23 @@
 
 (define-key persp-mode-map (kbd "C-x p b") 'custom-persp/bidra-web)
 
+;; Leest
+(defun custom-persp/leest ()
+  (interactive)
+  (custom-persp "leest"
+                (find-file "~/projects/leest/")))
+
+(define-key persp-mode-map (kbd "C-x p l") 'custom-persp/leest)
+
+;; ussr
+(defun custom-persp/ussr ()
+  (interactive)
+  (custom-persp "ussr"
+                (find-file "~/projects/ussr/")))
+
+(define-key persp-mode-map (kbd "C-x p u") 'custom-persp/ussr)
+
+
 ;; Småjobber
 ;; (defun custom-persp/smajobber ()
 ;;   (interactive)

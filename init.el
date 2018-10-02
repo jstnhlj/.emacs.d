@@ -3,6 +3,13 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
+(package-initialize)
+
+;; Remove security vulnerability
+(eval-after-load "enriched"
+  '(defun enriched-decode-display-prop (start end &optional param)
+     (list start end)))
+
 ;; No splash screen please ... jeez
 (setq inhibit-startup-message t)
 
@@ -42,7 +49,7 @@
 ;; Make backups of files, even when they're in version control
 (setq vc-make-backup-files t)
 
-;; Save point position between sessions
+;; Save point sposition between sessions
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (expand-file-name ".places" user-emacs-directory))
@@ -56,39 +63,47 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-   '(magit
-     paredit
-     move-text
-     gist
-     htmlize
-     visual-regexp
-     markdown-mode
+   '(
+     cider
+     clojure-mode
+     clojure-mode-extra-font-locking
+     css-eldoc
+     diff-hl
+     dockerfile-mode
+     edn
+     elisp-slime-nav
+     f
      fill-column-indicator
-     flycheck
-     flycheck-pos-tip
-     flycheck-clojure
      flx
      flx-ido
-     dired-details
-     css-eldoc
-     yasnippet
-     smartparens
-     ido-vertical-mode
-     ido-at-point
-     simple-httpd
-     guide-key
-     nodejs-repl
-     restclient
-     highlight-escape-sequences
-     whitespace-cleanup-mode
-     elisp-slime-nav
-     dockerfile-mode
-     clojure-mode
+     flycheck
+     flycheck-pos-tip
+     gist
      groovy-mode
+     guide-key
+     highlight-escape-sequences
+     htmlize
+     hydra
+     ido-at-point
+     ido-completing-read+
+     ido-vertical-mode
+     inflections
+     magit
+     markdown-mode
+     move-text
+     nodejs-repl
+     paredit
+     perspective
      prodigy
-     cider
-     js2-mode
-     js2-refactor
+     projectile
+     restclient
+     simple-httpd
+     smartparens
+     string-edit
+     visual-regexp
+     wgrep
+     whitespace-cleanup-mode
+     yasnippet
      )))
 
 (condition-case nil
@@ -117,8 +132,8 @@
 (eval-after-load 'org '(require 'setup-org))
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
-(eval-after-load 'grep '(require 'setup-rgrep))
 (eval-after-load 'shell '(require 'setup-shell))
+(require 'setup-rgrep)
 (require 'setup-hippie)
 (require 'setup-yasnippet)
 (require 'setup-perspective)
@@ -141,7 +156,8 @@
           java-mode
           ruby-mode
           markdown-mode
-          groovy-mode)
+          groovy-mode
+          scala-mode)
   (add-hook it 'turn-on-smartparens-mode))
 
 ;; Language specific setup files
@@ -154,7 +170,6 @@
 (autoload 'skewer-start "setup-skewer" nil t)
 (autoload 'skewer-demo "setup-skewer" nil t)
 (autoload 'auto-complete-mode "auto-complete" nil t)
-(eval-after-load 'flycheck '(require 'setup-flycheck))
 
 ;; Map files to modes
 (require 'mode-mappings)
@@ -180,7 +195,6 @@
 (require 'delsel)
 (require 'jump-char)
 (require 'eproject)
-(require 'wgrep)
 (require 'smart-forward)
 (require 'change-inner)
 (require 'multifiles)
@@ -228,3 +242,4 @@
 ;; Conclude init by setting up specifics for the current user
 (when (file-exists-p user-settings-dir)
   (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
+

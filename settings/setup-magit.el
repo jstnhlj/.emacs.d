@@ -1,4 +1,3 @@
-
 ;; full screen magit-status
 
 (defun magit-status-fullscreen (prefix)
@@ -9,9 +8,19 @@
 
 ;; don't prompt me
 
-(set-default 'magit-unstage-all-confirm nil)
-(set-default 'magit-stage-all-confirm nil)
+(set-default 'magit-push-always-verify nil)
 (set-default 'magit-revert-buffers 'silent)
+(set-default 'magit-no-confirm '(stage-all-changes
+                                 unstage-all-changes))
+
+;; move cursor into position when entering commit message
+
+(defun my/magit-cursor-fix ()
+  (beginning-of-buffer)
+  (when (looking-at "#")
+    (forward-line 2)))
+
+;; (add-hook 'git-commit-mode-hook 'my/magit-cursor-fix)
 
 ;; full screen vc-annotate
 
@@ -29,5 +38,12 @@
        (delete-other-windows))
 
      (define-key vc-annotate-mode-map (kbd "q") 'vc-annotate-quit)))
+
+(set-default 'magit-diff-refine-hunk t)
+
+;; update diff-hl
+
+(global-diff-hl-mode)
+(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
 (provide 'setup-magit)

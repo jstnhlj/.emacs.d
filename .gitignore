@@ -8,7 +8,6 @@ elpa
 swank
 emms
 url
-site-lisp/adventur-mode
 *.elc
 .DS_Store
 .yas-compiled-snippets.el
@@ -16,5 +15,8 @@ site-lisp/adventur-mode
 /url/
 /var/
 /.sx/
-history
-recentf
+/ensime/
+/history
+/ido.last
+/recentf
+/projectile-bookmarks.eld

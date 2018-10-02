@@ -3,11 +3,13 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        abbrev-prefix-mark
         ac-complete
         adv-dash
         adv-dot
         adv-enter
         adv-gt
+        adv-lt
         adv-open-curly
         adv-tab
         back-to-indentation-or-beginning
@@ -32,7 +34,13 @@
         cljr-splice-sexp-killing-backward
         cljr-thread-first-all
         cljr-unwind
+        clojure-backward-logical-sexp
+        clojure-forward-logical-sexp
+        clojure-mode-paredit-wrap-round
+        clojure-mode-paredit-wrap-square
+        clojure-thread-first-all
         clojure-toggle-keyword-string
+        comment-dwim
         complete-symbol
         cua-replace-region
         cua-set-mark
@@ -42,7 +50,9 @@
         dired-back-to-start-of-files
         down-list
         duplicate-current-line-or-region
+        electric-newline-and-maybe-indent
         end-of-buffer
+        end-of-defun
         eval-and-replace
         eval-last-sexp
         fill-paragraph
@@ -54,11 +64,14 @@
         hippie-expand-no-case-fold
         html-paragraph
         html-wrap-in-tag
+        indent-for-tab-command
+        insert-parentheses
         insert-postfix-whitespace
         js2-beginning-of-line
         js2-end-of-line
         js2-insert-and-indent
         js2r-inline-var
+        js2r-kill
         js2r-move-line-up
         js2r-split-string
         js2r-var-to-this
@@ -70,15 +83,20 @@
         kill-sexp
         live-cycle-clj-coll
         magit-stage-item
+        markdown-cycle
         markdown-enter-key
+        markdown-exdent-or-delete
         markdown-insert-link
+        markdown-outdent-or-delete
         move-line-down
         move-line-up
         move-text-down
         move-text-up
         move-to-window-line-top-bottom
+        my-toggle-expect-focused
         new-line-above
         new-line-dwim
+        nxml-electric-slash
         open-line-above
         open-line-and-indent
         open-line-below
@@ -90,6 +108,7 @@
         org-metaright
         org-return-indent
         org-self-insert-command
+        org-shiftleft
         org-shiftright
         org-yank
         orgtbl-self-insert-command
@@ -129,16 +148,20 @@
         paredit-wrap-round-from-behind
         paredit-wrap-square
         quoted-insert
+        reverse-region
         save-region-or-current-line
         sgml-delete-tag
         sgml-maybe-name-self
         sgml-slash
+        sh-assignment
         skeleton-pair-insert-maybe
         slime-space
         sp--self-insert-command
         sp-remove-active-pair-overlay
         sp-self-insert-command
         subtract-number-at-point
+        subword-left
+        subword-right
         tagedit-forward-slurp-tag
         tagedit-insert-dot
         tagedit-insert-equal
@@ -158,12 +181,15 @@
         touch-buffer-file
         transpose-params
         transpose-sexps
+        transpose-words
+        wdired-capitalize-word
         wdired-next-line
         wdired-previous-line
         wrap-region-trigger
         yaml-electric-backspace
         yaml-electric-dash-and-dot
         yank-indented
+        yank-unindented
         yas-expand
         zap-up-to-char
         ))
@@ -173,8 +199,13 @@
         adv-insert-new-number
         beginning-of-buffer
         cider-eval-ns-form
+        cider-macroexpand-1
         cleanup-buffer
+        clj-jump-to-other-file
+        clojure-mode-indent-top-level-form
+        custom-persp/emacs
         describe-key
+        diff-hl-diff-goto-hunk
         dired-toggle-read-only
         edebug-next-mode
         eval-expression
@@ -188,7 +219,9 @@
         jump-between-source-and-test-files
         kill-this-buffer
         kmacro-end-or-call-macro
+        magit-copy-buffer-revision
         magit-status
+        make-frame
         mc/add-cursor-on-click
         mc/add-cursors-to-all-matches
         multiple-cursors-mode
@@ -200,4 +233,5 @@
         wgrep-change-to-wgrep-mode
         wgrep-finish-edit
         wgrep-save-all-buffers
+        yank-rectangle
         ))

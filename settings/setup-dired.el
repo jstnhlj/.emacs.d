@@ -2,9 +2,7 @@
 (require 'dash)
 
 ;; Make dired less verbose
-(require 'dired-details)
-(setq-default dired-details-hidden-string "--- ")
-(dired-details-install)
+(add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 
 ;; Move files between split panes
 (setq dired-dwim-target t)
@@ -25,23 +23,9 @@
 (define-key dired-mode-map (kbd "C-a") 'dired-back-to-start-of-files)
 (define-key dired-mode-map (kbd "k") 'dired-do-delete)
 
-;; M-up is nicer in dired if it moves to the fourth line - the first file
-(defun dired-back-to-top ()
-  (interactive)
-  (beginning-of-buffer)
-  (dired-next-line 4))
+;; Enable 'a'-keybinding in dired - which opens the file and closes dired buffer
 
-(define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'dired-back-to-top)
-(define-key dired-mode-map (vector 'remap 'smart-up) 'dired-back-to-top)
-
-;; M-down is nicer in dired if it moves to the last file
-(defun dired-jump-to-bottom ()
-  (interactive)
-  (end-of-buffer)
-  (dired-next-line -1))
-
-(define-key dired-mode-map (vector 'remap 'end-of-buffer) 'dired-jump-to-bottom)
-(define-key dired-mode-map (vector 'remap 'smart-down) 'dired-jump-to-bottom)
+(put 'dired-find-alternate-file 'disabled nil)
 
 ;; Delete with C-x C-k to match file buffers and magit
 (define-key dired-mode-map (kbd "C-x C-k") 'dired-do-delete)

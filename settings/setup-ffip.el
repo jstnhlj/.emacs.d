@@ -50,17 +50,25 @@
 
 (setq-default ffip-find-options
               (ffip--create-exclude-find-options
-               '("/node_modules"
-                 "/bower_components"
-                 "/target"
-                 "/out"
-                 "/overlays"
-                 "/build"
-                 "/dist"
-                 "/vendor"
-                 "/.cask"
-                 "/generated"
-                 "/.repl"
-                 "/.tmp")))
+               '("/node_modules/"
+                 "/bower_components/"
+                 "/target/"
+                 "/out/"
+                 "/tests-out/"
+                 "/overlays/"
+                 "/build/"
+                 "/dist/"
+                 "/vendor/"
+                 ".cask/"
+                 "/generated/"
+                 "/resources/public/js/compiled/"
+                 "/.repl/"
+                 "/.tmp/")))
+
+;; Try out projectile
+
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (provide 'setup-ffip)

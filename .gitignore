@@ -1,0 +1,14 @@
+/elpa/
+/eln-cache/
+/tree-sitter/
+/auto-save-list/
+/backups/
+/transient/
+/eshell/
+/url/
+/history
+/recentf
+/places
+/projects
+/custom.el
+/local.el

@@ -54,16 +54,54 @@
         ("\\`\\(.*/\\)test/\\(.+\\)_test\\.clj[cs]?\\'"
          "\\1src/\\2\\.clj[cs]?\\'")))
 
-(defun my/find-sibling-file-other-window ()
-  "Like `find-sibling-file', but open the sibling in another window."
-  (interactive)
-  (switch-to-buffer-other-window
-   (save-window-excursion
-     (call-interactively #'find-sibling-file)
-     (current-buffer))))
+(defun my/clojure-path->ns (path)
+  "Turn a relative PATH like \"foo/bar_baz\" into the namespace foo.bar-baz."
+  (string-replace "_" "-" (string-replace "/" "." path)))
 
-(global-set-key (kbd "s-j") #'find-sibling-file)
-(global-set-key (kbd "s-J") #'my/find-sibling-file-other-window)
+(defun my/clojure-sibling-target (file)
+  "Return (PATH . CONTENTS) for the src/test file FILE should have, or nil."
+  (cond
+   ((string-match "\\`\\(.*/\\)src/\\(.+\\)\\.\\(clj[cs]?\\)\\'" file)
+    (let ((ns (my/clojure-path->ns (match-string 2 file))))
+      (cons (concat (match-string 1 file) "test/" (match-string 2 file)
+                    "_test." (match-string 3 file))
+            (format "(ns %s-test\n  (:require [clojure.test :refer [deftest is testing]]\n            [%s :as sut]))\n"
+                    ns ns))))
+   ((string-match "\\`\\(.*/\\)test/\\(.+\\)_test\\.\\(clj[cs]?\\)\\'" file)
+    (cons (concat (match-string 1 file) "src/" (match-string 2 file)
+                  "." (match-string 3 file))
+          (format "(ns %s)\n" (my/clojure-path->ns (match-string 2 file)))))))
+
+(defun my/find-sibling-or-create (file)
+  "Visit the sibling of FILE. If there is none, offer to create the src/test file.
+The file is written with its ns form before it is visited, so clojure-lsp
+doesn't add a second one."
+  (interactive (list (or buffer-file-name (user-error "Not visiting a file"))))
+  (if (find-sibling-file-search file)
+      (find-sibling-file file)
+    (pcase-let* ((`(,target . ,contents)
+                  (or (my/clojure-sibling-target file)
+                      (user-error "Couldn't find any sibling files")))
+                 (root (if-let* ((project (project-current)))
+                           (project-root project)
+                         default-directory)))
+      (when (y-or-n-p (format "Create %s? " (file-relative-name target root)))
+        (make-directory (file-name-directory target) t)
+        (write-region contents nil target nil 'silent nil 'excl)
+        (find-file target)))))
+
+(defun my/find-sibling-or-create-other-window ()
+  "Like `my/find-sibling-or-create', but open the sibling in another window."
+  (interactive)
+  (let* ((origin (current-buffer))
+         (buffer (save-window-excursion
+                   (call-interactively #'my/find-sibling-or-create)
+                   (current-buffer))))
+    (unless (eq buffer origin)
+      (switch-to-buffer-other-window buffer))))
+
+(global-set-key (kbd "s-j") #'my/find-sibling-or-create)
+(global-set-key (kbd "s-J") #'my/find-sibling-or-create-other-window)
 
 ;;; JavaScript / TypeScript / web
 

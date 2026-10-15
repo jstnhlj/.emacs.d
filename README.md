@@ -144,6 +144,7 @@ characters. `C-h` is backspace, so help lives on `F1`.
 | Key                      | Command                       |
 |--------------------------|-------------------------------|
 | `M-.` / `M-,`            | Go to definition / back       |
+| `s-j` / `s-J`            | Jump between src and test file (`s-J`: other window) |
 | `C-c l r`                | Rename symbol (eglot)         |
 | `C-c l a`                | Code actions (eglot)          |
 | `C-c l f`                | Format buffer (eglot)         |

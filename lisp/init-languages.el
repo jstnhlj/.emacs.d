@@ -46,6 +46,25 @@
   (cider-repl-display-output-before-window-boundaries t)
   (sesman-use-friendly-sessions nil))
 
+;; Jump between src/foo/bar.clj and test/foo/bar_test.clj (also .cljs/.cljc).
+;; Paths are absolute, since relative expansions resolve from where MATCH starts.
+(setq find-sibling-rules
+      '(("\\`\\(.*/\\)src/\\(.+\\)\\.clj[cs]?\\'"
+         "\\1test/\\2_test\\.clj[cs]?\\'")
+        ("\\`\\(.*/\\)test/\\(.+\\)_test\\.clj[cs]?\\'"
+         "\\1src/\\2\\.clj[cs]?\\'")))
+
+(defun my/find-sibling-file-other-window ()
+  "Like `find-sibling-file', but open the sibling in another window."
+  (interactive)
+  (switch-to-buffer-other-window
+   (save-window-excursion
+     (call-interactively #'find-sibling-file)
+     (current-buffer))))
+
+(global-set-key (kbd "s-j") #'find-sibling-file)
+(global-set-key (kbd "s-J") #'my/find-sibling-file-other-window)
+
 ;;; JavaScript / TypeScript / web
 
 (use-package typescript-ts-mode

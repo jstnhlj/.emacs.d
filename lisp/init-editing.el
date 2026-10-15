@@ -1,19 +1,19 @@
-;;; init-editing.el --- Redigering og tastebindinger  -*- lexical-binding: t; -*-
+;;; init-editing.el --- Editing and keybindings  -*- lexical-binding: t; -*-
 
-;;; Tastebindinger
+;;; Keybindings
 
-;; C-h er backspace som i skallet, hjelp ligger på F1
+;; C-h is backspace like in the shell, help lives on F1
 (define-key key-translation-map [?\C-h] [?\C-?])
 (global-set-key (kbd "<f1>") #'help-command)
 (global-set-key (kbd "<f1> a") #'apropos)
 
-;; Ikke avslutt Emacs ved et uhell. Mnemonic: C-x REALLY QUIT
+;; Don't quit Emacs by accident. Mnemonic: C-x REALLY QUIT
 (global-set-key (kbd "C-x r q") #'save-buffers-kill-terminal)
 (global-set-key (kbd "C-x C-c") #'delete-frame)
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "s-u") #'universal-argument)
 
-;; Slett og kopier
+;; Kill and copy
 (global-set-key (kbd "C-w") #'kill-region-or-backward-word)
 (global-set-key (kbd "M-h") #'kill-region-or-backward-word)
 (global-set-key (kbd "M-w") #'copy-region-or-rest-of-line)
@@ -24,13 +24,13 @@
 (global-set-key (kbd "M-s l") #'sort-lines)
 (global-set-key (kbd "M-<escape>") (lambda () (interactive) (revert-buffer t t)))
 
-;; Smarte nye linjer
+;; Clever newlines
 (global-set-key (kbd "C-o") #'open-line-and-indent)
 (global-set-key (kbd "<C-return>") #'open-line-below)
 (global-set-key (kbd "<C-S-return>") #'open-line-above)
 (global-set-key (kbd "<M-return>") #'new-line-dwim)
 
-;; Navigasjon
+;; Navigation
 (global-set-key (kbd "C-s") #'isearch-forward-use-region)
 (global-set-key (kbd "C-r") #'isearch-backward-use-region)
 (global-set-key (kbd "M-i") #'back-to-indentation)
@@ -39,13 +39,13 @@
 (global-set-key (kbd "C-S-n") (lambda () (interactive) (ignore-errors (forward-line 5))))
 (global-set-key (kbd "C-S-p") (lambda () (interactive) (ignore-errors (forward-line -5))))
 
-;; Vinduer: Shift+piler for å flytte, og hold dem balanserte
+;; Windows: Shift+arrows to move, and keep them balanced
 (windmove-default-keybindings)
 (global-set-key (kbd "C-x 0") #'my/delete-window)
 (global-set-key (kbd "C-x 2") #'my/split-window-down)
 (global-set-key (kbd "C-x 3") #'my/split-window-right)
 
-;;; Pakker
+;;; Packages
 
 (use-package move-text
   :bind (("<C-S-down>" . move-text-down)
@@ -78,11 +78,11 @@
   :bind ("C-x u" . vundo)
   :custom (vundo-glyph-alist vundo-unicode-symbols))
 
-;; Rydd whitespace ved lagring, men bare i filer som var rene fra før
+;; Clean up whitespace on save, but only in files that were clean to begin with
 (use-package whitespace-cleanup-mode
   :config (global-whitespace-cleanup-mode 1))
 
-;;; Implementasjoner
+;;; Implementations
 
 (defun kill-region-or-backward-word ()
   (interactive)
@@ -95,10 +95,10 @@
   (if (region-active-p)
       (kill-ring-save (region-beginning) (region-end))
     (kill-ring-save (point) (line-end-position))
-    (message "Kopierte til slutten av linja")))
+    (message "Copied to end of line")))
 
 (defun cleanup-buffer ()
-  "Fjern tabber og trailing whitespace, og indenter hele bufferen."
+  "Remove tabs and trailing whitespace, and reindent the whole buffer."
   (interactive)
   (untabify (point-min) (point-max))
   (delete-trailing-whitespace)
@@ -124,7 +124,7 @@
   (indent-for-tab-command))
 
 (defun new-line-dwim ()
-  "Ny linje. Står vi mellom et par som {}, åpnes paret over tre linjer."
+  "Newline. Between a pair like {}, open the pair over three lines."
   (interactive)
   (let ((break-open-pair (or (and (looking-back "{" 1) (looking-at "}"))
                              (and (looking-back ">" 1) (looking-at "<"))
@@ -144,12 +144,12 @@
   (call-interactively fn))
 
 (defun isearch-forward-use-region ()
-  "Som `isearch-forward', men legger regionen (om noen) i søkehistorikken."
+  "Like `isearch-forward', but adds the region (if any) to the search history."
   (interactive)
   (my/isearch-with-region #'isearch-forward))
 
 (defun isearch-backward-use-region ()
-  "Som `isearch-backward', men legger regionen (om noen) i søkehistorikken."
+  "Like `isearch-backward', but adds the region (if any) to the search history."
   (interactive)
   (my/isearch-with-region #'isearch-backward))
 

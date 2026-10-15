@@ -1,8 +1,8 @@
-;;; init-prog.el --- Felles verktøy for programmering  -*- lexical-binding: t; -*-
+;;; init-prog.el --- Shared programming tools  -*- lexical-binding: t; -*-
 
 ;;; Tree-sitter
 
-;; Låste versjoner som passer Emacs 30. Installer med M-x my/treesit-install-grammars.
+;; Pinned versions that work with Emacs 30. Install with M-x my/treesit-install-grammars.
 (setq treesit-language-source-alist
       '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src")
         (tsx        "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src")
@@ -13,13 +13,13 @@
         (yaml       "https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0")))
 
 (defun my/treesit-install-grammars ()
-  "Installer alle tree-sitter-grammatikker som mangler."
+  "Install all missing tree-sitter grammars."
   (interactive)
   (dolist (lang (mapcar #'car treesit-language-source-alist))
     (unless (treesit-language-available-p lang)
       (treesit-install-language-grammar lang))))
 
-;; Bruk *-ts-mode når grammatikken finnes
+;; Use *-ts-mode when the grammar is available
 (dolist (remap '((js-mode . js-ts-mode)
                  (javascript-mode . js-ts-mode)
                  (js-json-mode . json-ts-mode)
@@ -31,7 +31,7 @@
 
 ;;; LSP
 
-;; Eglot er innebygd og bruker flymake for diagnostikk
+;; Eglot is built in and uses flymake for diagnostics
 (use-package eglot
   :ensure nil
   :bind (:map eglot-mode-map
@@ -48,20 +48,20 @@
               ("M-g n" . flymake-goto-next-error)
               ("M-g p" . flymake-goto-prev-error)))
 
-;;; Søk
+;;; Search
 
 (use-package deadgrep
   :bind (("M-s s" . deadgrep)
          :map deadgrep-mode-map
          ("e" . deadgrep-edit-mode)))
 
-;; Rediger søketreff direkte i grep-buffere (C-c C-p), lagres automatisk
+;; Edit search hits directly in grep buffers (C-c C-p), saved automatically
 (use-package wgrep
   :custom (wgrep-auto-save-buffer t))
 
-;;; Diverse
+;;; Misc
 
-;; Farger i compile-buffere (testkjøringer o.l.)
+;; Colors in compilation buffers (test runs etc.)
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 (setq compilation-scroll-output 'first-error)
 

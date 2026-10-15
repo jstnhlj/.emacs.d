@@ -1,18 +1,18 @@
-;;; init-defaults.el --- Fornuftige standardverdier  -*- lexical-binding: t; -*-
+;;; init-defaults.el --- Sane defaults  -*- lexical-binding: t; -*-
 
-;; Oppdater buffere når filer endres på disk. Viktig når en agent redigerer
-;; filene dine: bufferne følger med uten at du må gjøre noe.
+;; Revert buffers when files change on disk. Important when an agent edits
+;; your files: buffers keep up without you doing anything.
 (setq global-auto-revert-non-file-buffers t
       auto-revert-verbose nil
-      auto-revert-check-vc-info t)   ; git-branch i modeline følger med også
+      auto-revert-check-vc-info t)   ; the git branch in the mode line follows too
 (global-auto-revert-mode 1)
 
-;; UTF-8 overalt
+;; UTF-8 everywhere
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (setq locale-coding-system 'utf-8)
 
-;; Små ting som gjør hverdagen bedre
+;; Small things that make life better
 (setq use-short-answers t
       echo-keystrokes 0.1
       delete-by-moving-to-trash t
@@ -32,16 +32,16 @@
 (column-number-mode 1)
 (delete-selection-mode 1)
 (global-subword-mode 1)
-(winner-mode 1)          ; C-c <left>/<right> angrer vindusendringer
-(savehist-mode 1)        ; minibuffer-historikk over omstarter
-(save-place-mode 1)      ; husk posisjon i filer
+(winner-mode 1)          ; C-c <left>/<right> undoes window changes
+(savehist-mode 1)        ; minibuffer history across restarts
+(save-place-mode 1)      ; remember position in files
 
 (use-package recentf
   :ensure nil
   :custom (recentf-max-saved-items 200)
   :config (recentf-mode 1))
 
-;; Backups i egen mappe, autosave i tmp, ingen låsefiler
+;; Backups in their own directory, autosaves in tmp, no lock files
 (setq backup-directory-alist
       `(("." . ,(expand-file-name "backups" user-emacs-directory)))
       vc-make-backup-files t
@@ -49,15 +49,15 @@
       create-lockfiles nil
       vc-handled-backends '(Git))
 
-;; Tilby å lage manglende mapper når en ny fil åpnes
+;; Offer to create missing directories when visiting a new file
 (defun my/create-non-existent-directory ()
   (let ((parent (file-name-directory buffer-file-name)))
     (when (and (not (file-exists-p parent))
-               (y-or-n-p (format "Mappen `%s' finnes ikke. Opprette den?" parent)))
+               (y-or-n-p (format "Directory `%s' does not exist. Create it?" parent)))
       (make-directory parent t))))
 (add-to-list 'find-file-not-found-functions #'my/create-non-existent-directory)
 
-;; Emacs-server for emacsclient (fint som $EDITOR, også for Claude Code)
+;; Emacs server for emacsclient (handy as $EDITOR, also for Claude Code)
 (use-package server
   :ensure nil
   :defer 2

@@ -4,7 +4,7 @@
   :bind (("C-x m" . magit-status)
          ("C-x v t" . magit-log-buffer-file))
   :custom
-  ;; Magit-status i hele rammen, q gjenoppretter vinduene
+  ;; Magit status fills the frame, q restores the windows
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function #'magit-restore-window-configuration)
   (magit-diff-refine-hunk t)
@@ -17,7 +17,7 @@
   :config
   (remove-hook 'magit-status-sections-hook #'magit-insert-tags-header))
 
-;; Vis endringer i margen. Rask oversikt over hva agenten har rørt.
+;; Show changes in the fringe. A quick overview of what the agent has touched.
 (use-package diff-hl
   :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -30,8 +30,8 @@
 (use-package browse-at-remote
   :bind ("C-x v w" . browse-at-remote-kill))
 
-;; ediff i samme ramme, side ved side. claude-code-ide bruker ediff til å vise
-;; foreslåtte endringer.
+;; ediff in the same frame, side by side. claude-code-ide uses ediff to show
+;; proposed changes.
 (use-package ediff
   :ensure nil
   :custom

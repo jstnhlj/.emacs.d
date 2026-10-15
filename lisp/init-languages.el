@@ -1,6 +1,6 @@
-;;; init-languages.el --- Språkstøtte  -*- lexical-binding: t; -*-
+;;; init-languages.el --- Language support  -*- lexical-binding: t; -*-
 
-;;; Lisp (Clojure og Emacs Lisp)
+;;; Lisp (Clojure and Emacs Lisp)
 
 (use-package paredit
   :hook ((emacs-lisp-mode lisp-data-mode clojure-mode cider-repl-mode) . paredit-mode)
@@ -10,7 +10,7 @@
               ("M-s-8" . paredit-wrap-square)
               ("M-s-(" . paredit-wrap-curly))
   :config
-  ;; Flytt paredit-bindinger som kolliderer med vanlige taster over på Super
+  ;; Move paredit bindings that clash with common keys over to Super
   (dolist (binding '(("M-s"         "s-s"         paredit-splice-sexp)
                      ("M-<up>"      "s-<up>"      paredit-splice-sexp-killing-backward)
                      ("M-<down>"    "s-<down>"    paredit-splice-sexp-killing-forward)
@@ -22,7 +22,7 @@
       (define-key paredit-mode-map (kbd original) nil)
       (define-key paredit-mode-map (kbd replacement) command)))
 
-  ;; La paredit spille på lag med delete-selection-mode
+  ;; Make paredit play nice with delete-selection-mode
   (put 'paredit-forward-delete 'delete-selection 'supersede)
   (put 'paredit-backward-delete 'delete-selection 'supersede)
   (put 'paredit-newline 'delete-selection t))
@@ -58,22 +58,22 @@
 
 (add-hook 'python-ts-mode-hook #'eglot-ensure)
 
-;;; Haskell og Tidal
+;;; Haskell and Tidal
 
 (use-package haskell-mode
   :hook (haskell-mode . interactive-haskell-mode))
 
-;; Live-koding med TidalCycles. C-c C-s starter, C-c C-c sender blokken.
+;; Live coding with TidalCycles. C-c C-s starts, C-c C-c sends the block.
 (use-package tidal
   :defer t)
 
-;;; Markdown og konfig
+;;; Markdown and config
 
-;; Brukes mye: CLAUDE.md, planer, README-er
+;; Used a lot: CLAUDE.md, plans, READMEs
 (use-package markdown-mode
   :mode (("README\\.md\\'" . gfm-mode)
          ("CLAUDE\\.md\\'" . gfm-mode))
-  ;; markdown-mode bruker M-n/M-p til lenker. Vi vil ha avsnitt som ellers.
+  ;; markdown-mode uses M-n/M-p for links. We want paragraphs, like everywhere else.
   :bind (:map markdown-mode-map
               ("M-n" . markdown-forward-paragraph)
               ("M-p" . markdown-backward-paragraph)

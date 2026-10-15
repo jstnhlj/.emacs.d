@@ -1,12 +1,12 @@
-;;; init-ai.el --- Claude Code i Emacs  -*- lexical-binding: t; -*-
+;;; init-ai.el --- Claude Code in Emacs  -*- lexical-binding: t; -*-
 
-;; Terminal i ren elisp. Claude Code-CLIen kjører i en eat-buffer.
+;; Pure elisp terminal. The Claude Code CLI runs in an eat buffer.
 (use-package eat
   :custom (eat-kill-buffer-on-exit t))
 
-;; claude-code-ide kjører `claude' i prosjektet og kobler den til Emacs over
-;; MCP. Claude ser da åpne buffere, markert region og flymake-diagnostikk, og
-;; viser forslag til endringer i ediff.
+;; claude-code-ide runs `claude' in the project and connects it to Emacs over
+;; MCP. Claude can then see open buffers, the active region and flymake
+;; diagnostics, and proposed changes are shown in ediff.
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind (("C-c a" . claude-code-ide-menu)
@@ -16,11 +16,11 @@
   (claude-code-ide-window-side 'right)
   (claude-code-ide-window-width 100)
   :config
-  ;; Gi Claude tilgang til xref, imenu, tree-sitter og project.el
+  ;; Give Claude access to xref, imenu, tree-sitter and project.el
   (claude-code-ide-emacs-tools-setup))
 
 (defun my/project-claude-md ()
-  "Åpne CLAUDE.md i roten av gjeldende prosjekt."
+  "Open CLAUDE.md at the root of the current project."
   (interactive)
   (find-file (expand-file-name "CLAUDE.md" (project-root (project-current t)))))
 

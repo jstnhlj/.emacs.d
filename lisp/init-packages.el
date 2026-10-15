@@ -1,13 +1,13 @@
-;;; init-packages.el --- Pakkehåndtering  -*- lexical-binding: t; -*-
+;;; init-packages.el --- Package management  -*- lexical-binding: t; -*-
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
-;; Skjer automatisk ved vanlig oppstart, men ikke i --batch
+;; Happens automatically on normal startup, but not in --batch
 (unless package--initialized
   (package-initialize))
 
-;; Installer manglende pakker automatisk
+;; Install missing packages automatically
 (require 'use-package)
 (setq use-package-always-ensure t)
 

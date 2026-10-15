@@ -1,10 +1,10 @@
-;;; init-ui.el --- Utseende  -*- lexical-binding: t; -*-
+;;; init-ui.el --- Appearance  -*- lexical-binding: t; -*-
 
 (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
 (load-theme 'default-black t)
 
 (defun my/reset-font ()
-  "Sett fonten. Kjør på nytt for hånd hvis Emacs startet som daemon."
+  "Set the font. Run it by hand if Emacs was started as a daemon."
   (interactive)
   (when (member "Monaco" (font-family-list))
     (set-face-attribute 'default nil :family "Monaco" :height 150)))
@@ -18,18 +18,18 @@
 (tooltip-mode -1)
 (pixel-scroll-precision-mode 1)
 
-;; Ikke pip, bare blink modeline
+;; Don't beep, just flash the mode line
 (setq ring-bell-function
       (lambda ()
         (invert-face 'mode-line)
         (run-with-timer 0.05 nil #'invert-face 'mode-line)))
 
-;; Ikke zoom med pinch eller C-scroll
+;; No zooming with pinch or C-scroll
 (global-set-key (kbd "<pinch>") #'ignore)
 (global-set-key (kbd "C-<wheel-up>") #'ignore)
 (global-set-key (kbd "C-<wheel-down>") #'ignore)
 
-;; Vis tilgjengelige taster etter et prefiks (innebygd i Emacs 30)
+;; Show available keys after a prefix (built into Emacs 30)
 (use-package which-key
   :ensure nil
   :custom

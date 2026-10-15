@@ -73,6 +73,12 @@
 (use-package markdown-mode
   :mode (("README\\.md\\'" . gfm-mode)
          ("CLAUDE\\.md\\'" . gfm-mode))
+  ;; markdown-mode bruker M-n/M-p til lenker. Vi vil ha avsnitt som ellers.
+  :bind (:map markdown-mode-map
+              ("M-n" . markdown-forward-paragraph)
+              ("M-p" . markdown-backward-paragraph)
+              ("M-N" . markdown-next-link)
+              ("M-P" . markdown-previous-link))
   :custom (markdown-fontify-code-blocks-natively t))
 
 (use-package yaml-ts-mode

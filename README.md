@@ -61,7 +61,7 @@ grammars with `M-x my/treesit-install-grammars`.
 | LSP & linting | eglot, flymake, tree-sitter (all built-in)                                          |
 | Search        | deadgrep, wgrep, consult-ripgrep                                                    |
 | Editing       | multiple-cursors, expand-region, move-text, undo-fu, vundo, whitespace-cleanup-mode |
-| Languages     | clojure-mode, cider, paredit, haskell-mode, tidal, markdown-mode                    |
+| Languages     | clojure-mode, cider, paredit, haskell-mode, tidal, markdown-mode, mixed-pitch, visual-fill-column |
 | macOS         | exec-path-from-shell                                                                |
 
 ## How the AI setup works
@@ -171,6 +171,7 @@ characters. `C-h` is backspace, so help lives on `F1`.
 | `C-c C-u`             | Up to parent heading          |
 | `M-N` / `M-P`         | Next / previous link          |
 | `C-c C-x C-m`         | Toggle hiding of markup       |
+| `C-c v`               | Toggle reading view           |
 
 ### Misc
 

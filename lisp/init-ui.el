@@ -7,7 +7,9 @@
   "Set the font. Run it by hand if Emacs was started as a daemon."
   (interactive)
   (when (member "Monaco" (font-family-list))
-    (set-face-attribute 'default nil :family "Monaco" :height 150)))
+    (set-face-attribute 'default nil :family "Monaco" :height 150))
+  (when (member "Helvetica Neue" (font-family-list))
+    (set-face-attribute 'variable-pitch nil :family "Helvetica Neue" :height 1.1)))
 (my/reset-font)
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b"))

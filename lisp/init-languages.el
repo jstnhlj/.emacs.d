@@ -135,8 +135,34 @@ doesn't add a second one."
               ("M-n" . markdown-forward-paragraph)
               ("M-p" . markdown-backward-paragraph)
               ("M-N" . markdown-next-link)
-              ("M-P" . markdown-previous-link))
-  :custom (markdown-fontify-code-blocks-natively t))
+              ("M-P" . markdown-previous-link)
+              ("C-c v" . my/markdown-read-mode))
+  :hook (markdown-mode . visual-line-mode)
+  :custom
+  (markdown-fontify-code-blocks-natively t)
+  (markdown-header-scaling t)
+  (markdown-header-scaling-values '(1.6 1.4 1.2 1.1 1.0 1.0))
+  (markdown-hide-urls t)
+  (markdown-italic-underscore t))
+
+;; Reading view: proportional font for prose, hidden markup, centered column.
+;; Code blocks and tables stay monospaced so they still line up.
+(use-package mixed-pitch
+  :defer t)
+
+(use-package visual-fill-column
+  :defer t
+  :custom
+  (visual-fill-column-width 90)
+  (visual-fill-column-center-text t))
+
+(define-minor-mode my/markdown-read-mode
+  "Show the current markdown buffer as rendered prose."
+  :lighter " Read"
+  (let ((arg (if my/markdown-read-mode 1 -1)))
+    (markdown-toggle-markup-hiding arg)
+    (mixed-pitch-mode arg)
+    (visual-fill-column-mode arg)))
 
 (use-package yaml-ts-mode
   :ensure nil

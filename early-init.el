@@ -20,3 +20,13 @@
 
 ;; Don't nag about native-comp warnings from packages
 (setq native-comp-async-report-warnings-errors 'silent)
+
+;; libgccjit's driver maps Darwin 25+ to the wrong macOS version (Darwin 27
+;; becomes "18.0"), which clang rejects. Pass the right version explicitly.
+;; Set it directly rather than after loading comp: async compilation only
+;; forwards the variable to its workers if it is bound in this process.
+(let ((darwin (and (eq system-type 'darwin)
+                   (string-to-number operating-system-release))))
+  (when (and darwin (>= darwin 25))
+    (setq native-comp-driver-options
+          (list "-Wl,-w" (format "-mmacosx-version-min=%d.0" (1- darwin))))))

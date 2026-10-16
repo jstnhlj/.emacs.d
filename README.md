@@ -23,12 +23,14 @@ without replacing your current one:
 
 ```sh
 brew install ripgrep aspell coreutils clojure-lsp/brew/clojure-lsp-native
+brew install cmake libvterm                      # builds vterm's C module
 npm i -g typescript-language-server typescript   # JS/TS
 pip install basedpyright                          # Python (or pyright)
 ```
 
 The Claude Code CLI (`claude`) must be on your `PATH`. Install the tree-sitter
-grammars with `M-x my/treesit-install-grammars`.
+grammars with `M-x my/treesit-install-grammars`. vterm compiles its module on
+first startup, and again after an Emacs upgrade.
 
 ## Structure
 
@@ -46,7 +48,7 @@ grammars with `M-x my/treesit-install-grammars`.
 | `lisp/init-git.el`        | magit, diff-hl, ediff                                       |
 | `lisp/init-prog.el`       | eglot, flymake, tree-sitter, deadgrep, dired                |
 | `lisp/init-languages.el`  | Clojure/CIDER, JS/TS, Python, Haskell/Tidal, Markdown       |
-| `lisp/init-ai.el`         | Claude Code (claude-code-ide + eat)                         |
+| `lisp/init-ai.el`         | Claude Code (claude-code-ide + vterm)                       |
 | `themes/`                 | The `default-black` theme                                   |
 | `local.el`                | Machine-specific settings, not checked in                   |
 
@@ -54,7 +56,7 @@ grammars with `M-x my/treesit-install-grammars`.
 
 | Area          | Packages                                                                            |
 |---------------|-------------------------------------------------------------------------------------|
-| AI            | [claude-code-ide](https://github.com/manzaltu/claude-code-ide.el), eat              |
+| AI            | [claude-code-ide](https://github.com/manzaltu/claude-code-ide.el), vterm            |
 | Completion    | vertico, orderless, marginalia, consult, corfu                                      |
 | Workspaces    | perspective, project.el (built-in)                                                  |
 | Git           | magit, diff-hl, browse-at-remote, ediff (built-in)                                  |
@@ -66,7 +68,7 @@ grammars with `M-x my/treesit-install-grammars`.
 
 ## How the AI setup works
 
-Claude Code runs in an `eat` terminal on the right side of the frame and is
+Claude Code runs in a `vterm` terminal on the right side of the frame and is
 connected to Emacs over MCP via claude-code-ide. Claude can see the active
 region, open buffers and flymake diagnostics, and can use xref, imenu,
 tree-sitter and project.el. Proposed changes are shown in ediff.

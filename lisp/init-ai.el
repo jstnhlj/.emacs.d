@@ -1,8 +1,13 @@
 ;;; init-ai.el --- Claude Code in Emacs  -*- lexical-binding: t; -*-
 
-;; Pure elisp terminal. The Claude Code CLI runs in an eat buffer.
-(use-package eat
-  :custom (eat-kill-buffer-on-exit t))
+;; The Claude Code CLI runs in a vterm buffer. vterm is built on libvterm (a C
+;; module), so it renders Claude's TUI faster and more faithfully than eat.
+;; Building the module needs cmake (brew install cmake libvterm).
+(use-package vterm
+  :custom
+  (vterm-always-compile-module t)
+  (vterm-kill-buffer-on-exit t)
+  (vterm-max-scrollback 10000))
 
 (defun my/claude-sideload-flags-disabled-p ()
   "Non-nil if Claude Code's org settings forbid flags like --mcp-config."
@@ -22,7 +27,7 @@
   :bind (("C-c a" . claude-code-ide-menu)
          ("C-c A" . claude-code-ide-toggle))
   :custom
-  (claude-code-ide-terminal-backend 'eat)
+  (claude-code-ide-terminal-backend 'vterm)
   (claude-code-ide-window-side 'right)
   (claude-code-ide-window-width 100)
   :config

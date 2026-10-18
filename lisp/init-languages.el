@@ -162,7 +162,224 @@ doesn't add a second one."
   (let ((arg (if my/markdown-read-mode 1 -1)))
     (markdown-toggle-markup-hiding arg)
     (mixed-pitch-mode arg)
-    (visual-fill-column-mode arg)))
+    (visual-fill-column-mode arg))
+  (if my/markdown-read-mode
+      (progn
+        (add-hook 'after-change-functions #'my/markdown-tables-schedule nil t)
+        (add-hook 'window-size-change-functions #'my/markdown-tables-schedule nil t)
+        (my/markdown-tables-schedule))
+    (remove-hook 'after-change-functions #'my/markdown-tables-schedule t)
+    (remove-hook 'window-size-change-functions #'my/markdown-tables-schedule t)
+    (remove-overlays nil nil 'my/markdown-table t)))
+
+;; Tables in the reading view are drawn as overlays: aligned on the visible
+;; text (hidden markup would otherwise skew the columns), with box borders,
+;; and with cells wrapped inside their column when the table is too wide.
+
+(defvar-local my/markdown-tables-timer nil)
+
+(defun my/markdown-tables-schedule (&rest _)
+  "Redraw the tables in the current buffer once Emacs is idle."
+  (when (timerp my/markdown-tables-timer)
+    (cancel-timer my/markdown-tables-timer))
+  (setq my/markdown-tables-timer
+        (run-with-idle-timer 0.2 nil #'my/markdown-tables-render (current-buffer))))
+
+(defun my/markdown-table-split-row (line)
+  "Split the table row LINE into cell strings.
+Pipes inside code spans or escaped with a backslash don't split."
+  (let ((line (string-trim line))
+        (cells nil) (cell "") (in-code nil) (i 0))
+    (when (string-prefix-p "|" line)
+      (setq line (substring line 1)))
+    (while (< i (length line))
+      (let ((c (aref line i)))
+        (cond ((and (eq c ?\\) (< (1+ i) (length line)) (eq (aref line (1+ i)) ?|))
+               (setq cell (concat cell "|") i (1+ i)))
+              ((eq c ?`) (setq in-code (not in-code) cell (concat cell "`")))
+              ((and (eq c ?|) (not in-code)) (push cell cells) (setq cell ""))
+              (t (setq cell (concat cell (string c))))))
+      (setq i (1+ i)))
+    (unless (string-blank-p cell) (push cell cells))
+    (mapcar #'string-trim (nreverse cells))))
+
+(defun my/markdown-table-inline (text)
+  "Return TEXT with code, bold, italic and link markup rendered as faces."
+  (let ((re (concat "`\\([^`]+\\)`\\|\\*\\*\\(.+?\\)\\*\\*"
+                    "\\|\\[\\([^]]+\\)\\]([^)]*)\\|\\*\\([^*]+\\)\\*"))
+        (pos 0) (out ""))
+    (while (string-match re text pos)
+      (setq out (concat out (substring text pos (match-beginning 0))
+                        (cond ((match-beginning 1)
+                               (propertize (match-string 1 text) 'face 'markdown-inline-code-face))
+                              ((match-beginning 2)
+                               (propertize (match-string 2 text) 'face 'bold))
+                              ((match-beginning 3)
+                               (propertize (match-string 3 text) 'face 'markdown-link-face))
+                              (t (propertize (match-string 4 text) 'face 'italic))))
+            pos (match-end 0)))
+    (concat out (substring text pos))))
+
+(defun my/markdown-table-widths (natural minimum avail)
+  "Fit the column widths NATURAL into AVAIL characters.
+Each column gets its MINIMUM (its longest word) and the rest is shared in
+proportion to how much more it needs. If even the minimums don't fit,
+narrow columns keep their width and the others share what is left equally."
+  (let ((min-total (apply #'+ minimum)))
+    (cond
+     ((<= (apply #'+ natural) avail) natural)
+     ((<= min-total avail)
+      (let* ((wants (cl-mapcar #'- natural minimum))
+             (extra (- avail min-total))
+             (total (max 1 (apply #'+ wants))))
+        (cl-mapcar (lambda (min want) (+ min (/ (* extra want) total)))
+                   minimum wants)))
+     (t
+      (let ((widths (make-vector (length natural) nil))
+            (left avail)
+            (open (number-sequence 0 (1- (length natural))))
+            (changed t))
+        (while (and open changed)
+          (setq changed nil)
+          (let ((share (/ left (length open))))
+            (dolist (i (copy-sequence open))
+              (when (<= (nth i natural) share)
+                (aset widths i (nth i natural))
+                (setq left (- left (nth i natural))
+                      open (delq i open)
+                      changed t)))))
+        (let ((share (max 4 (/ left (max 1 (length open))))))
+          (dolist (i open) (aset widths i share)))
+        (append widths nil))))))
+
+(defun my/markdown-table-wrap (text width)
+  "Word-wrap TEXT into a list of lines no wider than WIDTH."
+  (let ((lines nil) (current ""))
+    (dolist (word (split-string text " " t))
+      (while (> (string-width word) width)
+        (unless (string-empty-p current) (push current lines) (setq current ""))
+        (push (truncate-string-to-width word width) lines)
+        (setq word (substring word (length (car lines)))))
+      (cond ((string-empty-p current) (setq current word))
+            ((<= (+ (string-width current) 1 (string-width word)) width)
+             (setq current (concat current " " word)))
+            (t (push current lines) (setq current word))))
+    (push current lines)
+    (nreverse lines)))
+
+(defun my/markdown-table-pad (text width align)
+  "Pad TEXT to WIDTH according to ALIGN (l, c or r)."
+  (let* ((gap (max 0 (- width (string-width text))))
+         (before (pcase align ('r gap) ('c (/ gap 2)) (_ 0))))
+    (concat (make-string before ?\s) text (make-string (- gap before) ?\s))))
+
+(defun my/markdown-table-columns ()
+  "Number of fixed-pitch characters that fit in the window showing this buffer."
+  (if-let* ((window (get-buffer-window nil t)))
+      (let ((char (/ (string-pixel-width (propertize (make-string 10 ?x) 'face 'fixed-pitch))
+                     10.0)))
+        (1- (floor (window-body-width window t) char)))
+    80))
+
+(defun my/markdown-table-draw (rows aligns avail)
+  "Draw ROWS (header first) as a box table at most AVAIL wide.
+Return one list of screen lines per source line: the header, the delimiter
+row and then each body row."
+  (let* ((ncols (apply #'max (mapcar #'length rows)))
+         (rows (mapcar (lambda (row)
+                         (mapcar #'my/markdown-table-inline
+                                 (append row (make-list (- ncols (length row)) ""))))
+                       rows))
+         (natural (cl-loop for i below ncols
+                           collect (max 1 (apply #'max (mapcar (lambda (row) (string-width (nth i row)))
+                                                               rows)))))
+         (minimum (cl-loop for i below ncols
+                           collect (apply #'max 1 (mapcan (lambda (row)
+                                                            (mapcar #'string-width
+                                                                    (split-string (nth i row) " " t)))
+                                                          rows))))
+         (widths (my/markdown-table-widths natural minimum (- avail (1+ (* 3 ncols)))))
+         (wrapped (mapcar (lambda (row) (cl-mapcar #'my/markdown-table-wrap row widths)) rows))
+         (separate (cl-some (lambda (row) (cl-some #'cdr row)) wrapped))
+         (rule (lambda (left mid right)
+                 (propertize (concat left (mapconcat (lambda (w) (make-string (+ w 2) ?─))
+                                                     widths mid)
+                                     right)
+                             'face 'shadow)))
+         (bar (propertize "│" 'face 'shadow))
+         (line (lambda (row n header)
+                 (concat bar
+                         (cl-loop for cell in row
+                                  for w in widths
+                                  for i from 0
+                                  concat (let ((text (or (nth n cell) "")))
+                                           (when header
+                                             (setq text (propertize text 'face 'bold)))
+                                           (concat " " (my/markdown-table-pad text w (nth i aligns))
+                                                   " " bar))))))
+         (lines-of (lambda (row header)
+                     (cl-loop for n below (apply #'max (mapcar #'length row))
+                              collect (funcall line row n header))))
+         (groups (list (list (funcall rule "├" "┼" "┤"))
+                       (cons (funcall rule "┌" "┬" "┐")
+                             (funcall lines-of (car wrapped) t)))))
+    (cl-loop for (row . more) on (cdr wrapped)
+             do (push (append (funcall lines-of row nil)
+                              (cond ((null more) (list (funcall rule "└" "┴" "┘")))
+                                    (separate (list (funcall rule "├" "┼" "┤")))))
+                      groups))
+    (when (null (cdr wrapped))
+      (setcar groups (append (car groups) (list (funcall rule "└" "┴" "┘")))))
+    (mapcar (lambda (group)
+              (mapcar (lambda (l) (add-face-text-property 0 (length l) 'fixed-pitch t l) l)
+                      group))
+            (nreverse groups))))
+
+(defun my/markdown-table-place (lines beg end)
+  "Show LINES in place of the text between BEG and END.
+Each line gets its own overlay on a character of the source line, so the
+window can start at any of them and scroll the table line by line."
+  (let ((pos beg))
+    (while lines
+      (let* ((last (or (null (cdr lines)) (>= (1+ pos) end)))
+             (ov (make-overlay pos (if last end (1+ pos)))))
+        (overlay-put ov 'my/markdown-table t)
+        (overlay-put ov 'evaporate t)
+        (overlay-put ov 'display (if last
+                                     (string-join lines "\n")
+                                   (concat (car lines) "\n")))
+        (setq pos (1+ pos)
+              lines (if last nil (cdr lines)))))))
+
+(defun my/markdown-tables-render (&optional buffer)
+  "Draw every GFM table in BUFFER (default current) with overlays."
+  (with-current-buffer (or buffer (current-buffer))
+    (when my/markdown-read-mode
+      (remove-overlays nil nil 'my/markdown-table t)
+      (let ((avail (my/markdown-table-columns)))
+        (save-excursion
+          (goto-char (point-min))
+          (while (re-search-forward markdown-table-line-regexp nil t)
+            (if (not (markdown-table-at-point-p))
+                (forward-line 1)
+              (let* ((beg (markdown-table-begin))
+                     (end (markdown-table-end))
+                     (lines (split-string (buffer-substring-no-properties beg end) "\n" t))
+                     (delimiter (cadr lines)))
+                (when (and delimiter (string-match-p "\\`[ \t|:-]+\\'" delimiter))
+                  (let* ((aligns (mapcar (lambda (spec)
+                                           (cond ((string-match-p "\\`:.*:\\'" spec) 'c)
+                                                 ((string-match-p ":\\'" spec) 'r)
+                                                 (t 'l)))
+                                         (my/markdown-table-split-row delimiter)))
+                         (rows (mapcar #'my/markdown-table-split-row
+                                       (cons (car lines) (cddr lines))))
+                         (groups (my/markdown-table-draw rows aligns avail)))
+                    (goto-char beg)
+                    (dolist (group groups)
+                      (my/markdown-table-place group (point) (line-end-position))
+                      (forward-line 1))))
+                (goto-char end)))))))))
 
 (use-package yaml-ts-mode
   :ensure nil

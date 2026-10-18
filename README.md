@@ -73,6 +73,10 @@ connected to Emacs over MCP via claude-code-ide. Claude can see the active
 region, open buffers and flymake diagnostics, and can use xref, imenu,
 tree-sitter and project.el. Proposed changes are shown in ediff.
 
+Claude uses its default renderer in Emacs, even if `"tui": "fullscreen"` is
+set, so its output stays in vterm's scrollback. `C-c C-t` toggles copy mode for
+scrolling and searching; the buffer doesn't update until you leave it.
+
 Buffers revert automatically when Claude writes to disk (the git branch in the
 mode line follows along too), and diff-hl marks changed lines in the fringe, so
 it's easy to see what the agent has touched. Each project gets its own

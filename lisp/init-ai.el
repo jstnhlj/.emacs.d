@@ -36,7 +36,11 @@
   ;; disableSideloadFlags, making claude exit immediately. Skip it there;
   ;; the core IDE integration works without it.
   (unless (my/claude-sideload-flags-disabled-p)
-    (claude-code-ide-emacs-tools-setup)))
+    (claude-code-ide-emacs-tools-setup)
+    ;; "tui": "fullscreen" in ~/.claude/settings.json draws on the alternate
+    ;; screen, which leaves vterm without scrollback. Use the default
+    ;; renderer in Emacs so the output can be scrolled and searched.
+    (setopt claude-code-ide-cli-extra-flags "--settings '{\"tui\":\"default\"}'")))
 
 (defun my/project-claude-md ()
   "Open CLAUDE.md at the root of the current project."
